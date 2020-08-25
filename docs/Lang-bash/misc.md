@@ -35,3 +35,12 @@ can store small temporary files.
 Note that `XDG_RUNTIME_DIR` is set by `pam_systemd(8)`, so it is not actually
 related to X (running programs graphically), which is the problem you seem to
 be having.
+
+### Setting a script arguments with set `set`
+Use `set -- list of args`
+```
+$ set -- foo bar fax
+$ echo $@
+foo bar fax
+```
+
