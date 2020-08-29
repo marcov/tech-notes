@@ -128,9 +128,9 @@ gdb
 maintenance info sections
 ```
 
-## Use a separate symbol file
+## Use a separate symbol symbols file
 ```
-add-symbol-file <file-name> <address>
+add-symbol-file <debug-info-file> <address>
 ```
 
 How to retrieve address?
@@ -143,6 +143,25 @@ readelf -WS <path-to-executable-without-debug>
 Or, to automate that:
 ```
 objdump -f <exec path> | grep  "start address" | sed -E "s/start address (0x[0-9a-f])/\1/g"
+```
+
+You can also use `objcopy` to include a symbol file name automatically looked up:
+```
+$ objcopy --add-gnu-debuglink=foobar-app.debug foobar-app
+```
+
+Read that using `objdump`:
+```
+$ objdump -g  foobar-app | grep debuglink -A 10
+objdump: Warning: could not find separate debug file  ...
+objdump: Warning: tried: /lib/debug/...
+objdump: Warning: tried: /usr/lib/debug/...
+objdump: Warning: tried: /home/marco/.debug/...
+objdump: Warning: tried: .debug/...
+objdump: Warning: tried: ...
+Contents of the .gnu_debuglink section (loaded from foobar-app):
+
+  Separate debug info file: foobar-app.debug
 ```
 
 ## Print data type format

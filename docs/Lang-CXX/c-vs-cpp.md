@@ -63,3 +63,40 @@ foo += 2;
 - C++: `const` used on a non-local, non-volatile, non-inline variable gives it
   internal linkage, unless `extern` is explicitly specified.
 - C: file-scope `const` variables have external linkage by default.
+
+### Overloading and Name Mangling
+- C++ supports functions overload, using name mangling.
+- C does not support name mangling, so it does not use overload.
+
+You can tell the C++ compiler not to mangle specific part of the code, so that
+it will emit object codes with their name un-mangled, using `extern "C"`.
+This way, you will be able to link this object with C only objects:
+
+Compile with `-c`:
+```
+// exit reference is un-mangled:
+extern "C"
+void exit (int __status);
+int main(void)
+{
+    exit(0);
+    return 0;
+}
+```
+
+Without `extern "C"`:
+```
+$ nm a.out
+                 U _GLOBAL_OFFSET_TABLE_
+0000000000000000 T main
+                 U _Z4exiti
+```
+
+With `extern "C"`:
+```
+$ nm a.out
+                 U exit
+                 U _GLOBAL_OFFSET_TABLE_
+0000000000000000 T main
+
+```

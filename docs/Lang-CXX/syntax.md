@@ -157,3 +157,25 @@ A macro declared to accept a variable number of arguments, like a function can d
   * Unions
 
 - `void`
+
+### Trigraph sequences
+Before any other processing takes place, each occurrence of one of the following
+sequences of three characters (called trigraph sequences) is replaced with the
+corresponding single character.
+```
+        ??=      #                       ??)      ]                       ??!     |
+        ??(      [                       ??'      ^                       ??>     }
+        ??/      \                       ??<      {                       ??-     ~
+```
+
+No other trigraph sequences exist. Each `?` that does not begin one of the
+trigraphs listed above is not changed.
+
+```
+           ??=define arraycheck(a, b) a??(b??) ??!??! b??(a??)
+```
+becomes
+```
+           #define arraycheck(a, b) a[b] || b[a]
+```
+NOTE: with GCC, use the `-trigraphs` flag to enable trigraphs use.

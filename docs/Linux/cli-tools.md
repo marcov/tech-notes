@@ -37,9 +37,15 @@ $ nohup <command> <command options> >dev/null &
 ```
 
 ## SED
-### Delete line with a given pattern
+### Delete lines
+With a given pattern (`/pattern/d`):
 ```
 $ sed "/pattern/d" file.txt
+```
+
+In a given range (`i,jd`):
+```
+$ sed "2,14d" file.txt
 ```
 
 ## ss: socket statistics

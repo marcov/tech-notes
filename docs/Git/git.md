@@ -220,3 +220,32 @@ Handy to be used with rebase:
 ```
 $ git rebase -i $(git merge-base HEAD origin/master)
 ```
+
+## Clean everything
+
+>
+> **NOTE**: USE WITH CARE!
+>
+```
+$ git clean -fdx
+```
+
+## Checkout a branch with an arbitrary name
+```
+$ git checkout -b LOCAL-BRANCH origin/remote-branch-name
+```
+
+## Ignore files without changing `.gitignore`
+
+Just add those files to `$GIT_DIR/info/exclude`.
+
+## Prevent changes to a tracked file to show up in `git status`
+Add this to your config:
+```
+[alias]
+  ignore = update-index --assume-unchanged
+  unignore = update-index --no-assume-unchanged
+  ignored = "!git ls-files -v | grep ^[a-z]"
+```
+
+and use `git ignore changed-file`
