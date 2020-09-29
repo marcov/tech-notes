@@ -1,0 +1,23 @@
+site_name: Tech Notes
+site_description: Personal tech notes and documentation
+site_author: marco v
+repo_url: https://github.com/marcov/tech-notes
+site_url: https://docs.sba.lat
+docs_dir: docs
+
+#theme: readthedocs
+theme: readthedocs
+
+#pages:
+#- Home:
+#  - Overview: 'README.md'
+#  - ACME Documentation: 'ACME.md'
+#- Installation:
+#  - ACME Installation: 'installation/ACME.md'
+#- Configuration:
+#  - ACME Configuration: 'configuration/ACME.md'
+#- Development:
+#  - ACME Coding Conventions: 'development/ACME.md'
+#- References: 'references.md'
+#
+#google_analytics: ['UA-#########-#', 'docs.sba.lat']
