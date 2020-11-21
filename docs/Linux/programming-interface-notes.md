@@ -58,6 +58,13 @@ so that is has a chance to reap the child.
 > More info: https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/
 >
 
+### Create a session leader
+Use the `setsid()` syscall.
+This will clear out the process controlling tty.
+- A new pty master/slave pair is allocated with `posix_openpt()`.
+- The session leader acquires a controlling terminal with `ioctl(fd, TIOCSCTTY, ...)`
+  `fd` is typically the slave fd of a pty master/slave pair.
+
 ## Threads
 ### Thread IDs
  - TID: the Thread ID

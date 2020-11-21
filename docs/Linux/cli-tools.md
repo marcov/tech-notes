@@ -138,7 +138,18 @@ $ getent ahosts google.com
 $ getent hosts localhost
 ```
 
-## SSH VNC tunnel
+## SSH port forwarding
+Use `ssh -L local-port:host-addr:host-port -N [-f]`.
+
+- `-L local-port:host:host-port`: Forward the `local-port` TCP connection to the given
+remote host:host-port. This makes ssh listen locally `local-port`
+
+- `-N`: do not execute a comment (because of `-L`)
+
+- `-f`: go in background
+
+### SSH VNC tunnel
+
 ```
-$ ssh -L 5901:127.0.0.1:5901 -N -f -p PORT -l pi example.com
+$ ssh -L 5901:127.0.0.1:5901 -N -f -p SSH-PORT -l pi example.com
 ```

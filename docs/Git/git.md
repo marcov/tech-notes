@@ -249,3 +249,29 @@ Add this to your config:
 ```
 
 and use `git ignore changed-file`
+
+## Fetching an untagged (orphaned) commit ID
+
+Git does not fetch orphaned commit IDs, i.e IDs not reachable by name.
+You first need to tag tag commit ID upstream.
+
+## Fetch & update local branch
+This way, you don't need to `git checkout` and `git pull`.
+```
+$ git fetch origin BRANCH-NAME:BRANCH-NAME
+```
+
+## Rewrite previous commits username and emails
+```
+git config --global alias.change-commits '!'"f() { VAR=\$1; OLD=\$2; NEW=\$3; shift 3; git filter-branch --env-filter \"if [[ \\\"\$\`echo \$VAR\`\\\" = '\$OLD' ]]; then export \$VAR='\$NEW'; fi\" \$@; }; f"
+```
+
+Change the author:
+```
+git change-commits GIT_AUTHOR_NAME "old name" "new name"
+```
+
+Change email for the last 10 commits:
+```
+git change-commits GIT_AUTHOR_EMAIL "old@email.com" "new@email.com" HEAD~10..HEAD
+```

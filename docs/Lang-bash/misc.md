@@ -44,3 +44,8 @@ $ echo $@
 foo bar fax
 ```
 
+## Read all lines in a file
+
+```
+$ while read -r line; do COMMAND; done < input.file
+```

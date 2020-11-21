@@ -28,6 +28,7 @@ pippo.txt
 
 `$*`: All arguments separated by `$IFS`
 `$@`: All arguments separated by ` `
+
 ```bash
 fooStar() { echo "$*" }
 fooAt() { echo "$@" }
