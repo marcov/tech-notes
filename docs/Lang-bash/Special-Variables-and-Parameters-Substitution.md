@@ -80,8 +80,7 @@ ${var%%o*r} => f : remove longer "oobar" pattern
 `${variable/%pattern/replacement}` : like normal replace, but `pattern` is a **SUFFIX** of
 `${variable}`
 
-`${variable//pattern/replacement}` : replace ALL `pattern` with `replacement` in ${variable}`.
+`${variable//pattern/replacement}` : replace ALL `pattern` with `replacement` in `${variable}`.
 (If `replacement` is empty, just delete `pattern`).
 
-
-
+`${variable:N:L}`: returns a slice of length `L` of `variable`, from offset `N`.

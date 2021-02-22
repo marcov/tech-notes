@@ -4,12 +4,16 @@
 >**NOTE**: these are effectively readline shortcuts.
 >
 
+Arrows alternative:
+
+`C-b`: backward one char (like <-)
+`C-n`: down one line (like ^)
+`C-p`: up one line (like v)
+`C-f`: forward one char (like ->)
+
 `C-a`: begin of line
 
 `C-e`: end of line
-
-`C-b`: backward one char (like <-)
-`C-f`: forward one char (like ->)
 
 `A-b`: backward one word
 `A-f`: forward one word

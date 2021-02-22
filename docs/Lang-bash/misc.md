@@ -44,8 +44,36 @@ $ echo $@
 foo bar fax
 ```
 
+## Read all words from stdin (pipe)
+
+> Note: xargs cannot be used here, since we need to invoke the command once for each
+> word
+```
+docker images | grep IMGPATTERN | awk '{print $1":"$2}' | while read -r img; do docker push $img; done
+```
+
 ## Read all lines in a file
 
 ```
 $ while read -r line; do COMMAND; done < input.file
+```
+
+## cat as a shell built-in
+```
+function cat {
+  # if there's only one arg, not starting with a `-`
+  if [ $# -eq 1 -a "${1:0:1}" != "-" ]
+  then
+    # open the input file with fd=3
+    exec 3< "${1:-/dev/stdin}"
+    while read -r -u3 line
+    do
+      echo -E ''"${line}";
+    done
+    echo -nE ''"${line}";
+    exec 3<&-
+  else
+     /bin/cat "$@"
+  fi
+}
 ```

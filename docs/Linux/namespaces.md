@@ -10,6 +10,8 @@ Run a command in a new namespace.
 - `--mount-proc` is used together with `--fork` and `--pid` to mount a new procfs
   (at /proc) containing only the PIDs in the new PID namespace.
 
+Creating a  new `--pid` namespace requires the `CAP_SYS_ADMIN` capability.
+
 ```
 $ sudo unshare --fork --ipc --pid --net --mount --mount-proc bash
 ```

@@ -6,7 +6,7 @@ site_url: https://docs.sba.lat
 docs_dir: docs
 
 #theme: readthedocs
-theme: readthedocs
+theme: mkdocs
 
 #pages:
 #- Home:

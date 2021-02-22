@@ -14,6 +14,5 @@ I am using _Read the Docs_ with `mkdocs` to auto-generate HTML from Markdown.
 For local development & testing run this command from the repository root:
 ```
 # (This assumes mkdocs is available on your system)
-$ mkdocs serve
+$ mkdocs serve [-a LISTEN-IP:LISTEN-PORT] [--livereload]
 ```
-

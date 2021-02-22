@@ -1,17 +1,20 @@
 # Git
 
-## Diff of a specific revision
-These are equivalent:
+## Show diff between a revision and its parent
 
 ```
+# There are equivalent!
+$ git diff <REV>^!
 $ git diff <REV>~..<REV>
 ```
 
+## Show diff between different files in different branches
+
 ```
-$ git diff <REV>^!
+git difftool -d REV1:path/to/file1 REV2:path/to/another/file2
 ```
 
-## `..` and `...`
+## Difference between `..` and `...`
 
 `..`: used with `git log`
 

@@ -38,6 +38,10 @@ asm("mov    $57, %%eax\n syscall\n" : "=r" (pid));
 *Process Groups* and *Sessions* are abstraction to support shell job control,
 e.g. allow interactive users to run command in fg / bg.
 
+### Symbolic process stack
+`/proc/[pid]/stack`: This file provides a symbolic trace of the function calls in
+this process's kernel stack.
+
 ### Zombie vs orphan
 - Orphan: a process whose parent has terminated, but that is still in execution.
 
@@ -133,3 +137,43 @@ Reasons:
  - select() can destroy your stack, if checking for a FD larger than FD_SETSIZE.
 
 More info: https://beesbuzz.biz/code/5739-The-problem-with-select-vs-poll
+
+# `setuid()` - glibc
+From the glibc manual:
+    NPTL and process credential changes
+    At the Linux kernel level, credentials (user and group IDs) are a
+    per-thread attribute. However, POSIX requires that all of the
+    POSIX threads in a process have the same credentials. To
+    accommodate this requirement, the NPTL implementation wraps all
+    of the system calls that change process credentials with
+    functions that, in addition to invoking the underlying system
+    call, arrange for all other threads in the process to also change
+    their credentials.
+
+    The implementation of each of these system calls involves the use
+    of a real-time signal that is sent (using tgkill(2)) to each of
+    the other threads that must change its credentials. Before
+    sending these signals, the thread that is changing credentials
+    saves the new credential(s) and records the system call being
+    employed in a global buffer. A signal handler in the receiving
+    thread(s) fetches this information and then uses the same system
+    call to change its credentials.
+
+    Wrapper functions employing this technique are provided for
+    setgid(2), setuid(2), setegid(2), seteuid(2), setregid(2),
+    setreuid(2), setresgid(2), setresuid(2), and setgroups(2).
+
+    NPTL real-time signals
+    NPTL makes internal use of the first two real-time signals
+    (signal numbers 32 and 33). One of these signals is used to
+    support thread cancellation and POSIX timers (see
+    timer_create(2)); the other is used as part of a mechanism that
+    ensures all threads in a process always have the same UIDs and
+    GIDs, as required by POSIX. These signals cannot be used in
+    applications.
+
+    - The sigprocmask(2) and pthread_sigmask(3) interfaces silently
+    ignore attempts to block these two signals.
+    - sigfillset(3) does not include these two signals when it
+    creates a full signal set.
+

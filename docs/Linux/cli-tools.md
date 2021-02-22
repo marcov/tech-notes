@@ -150,6 +150,22 @@ remote host:host-port. This makes ssh listen locally `local-port`
 
 ### SSH VNC tunnel
 
+1. Start the VNC server remotely:
+```
+$ vncserver
+```
+
+2. Setup the SSH tunnel locally:
 ```
 $ ssh -L 5901:127.0.0.1:5901 -N -f -p SSH-PORT -l pi example.com
 ```
+
+3. Run the VNC client locally:
+```
+$ xtigervncviewer
+```
+
+## mtr - my tracerouter
+`mtr` combines the functionality of the traceroute and ping programs in a single
+network diagnostic tool.
+
