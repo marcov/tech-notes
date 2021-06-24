@@ -102,6 +102,30 @@ Brace enclosed sequence of statements.
 
 More info: https://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html#Statement-Exprs
 
+### Array of characters initialization
+
+>
+> An array of character type may be initialized by a character string literal,
+> optionally enclosed in braces. Successive characters of the character string
+> literal (including the terminating null character if there is room or if the
+> array is of unknown size) initialize the elements of the array.
+>
+
+So these are equivalent:
+```
+char foo[] = "ciao";
+
+char foo[] = {"ciao"}; // Optionally enclosed in braces
+
+char foo[] = {'c', 'i', 'a', 'o'};
+```
+
+`char *` variables, CANNOT be initialized with an array of characters:
+```
+// ERROR!
+char* foo = {'c', 'i', 'a', 'o'};
+```
+
 ### Comma AS operator
  * Separates expressions (NOT statements).
 

@@ -8,6 +8,12 @@ echo $n
 #n=124
 ```
 
+And also `echo $(( n+1 ))`
+
+This construct can also be used to force a base, or trim leading zeroes:
+- `$((10#0000123))` returns `123`. Without `10#` a number with leading zeroes
+  could be interpreted as octal.
+
 - Using `let`:
 ```
 n=123

@@ -144,7 +144,7 @@ Use `ssh -L local-port:host-addr:host-port -N [-f]`.
 - `-L local-port:host:host-port`: Forward the `local-port` TCP connection to the given
 remote host:host-port. This makes ssh listen locally `local-port`
 
-- `-N`: do not execute a comment (because of `-L`)
+- `-N`: do not execute a command (because of `-L`)
 
 - `-f`: go in background
 
@@ -169,3 +169,8 @@ $ xtigervncviewer
 `mtr` combines the functionality of the traceroute and ping programs in a single
 network diagnostic tool.
 
+## openssl cheats
+See a certificate content:
+```
+$ openssl x509 -text -noout -in /PATH/TO/THE/CERT.crt
+```
