@@ -40,8 +40,36 @@ $ mount --bind /proc/PID/ns/{uts,net,pid,...}  [ANY-PATH]
 `mnt` NS is an exception, the mount bind can only be done in a different mount namespace:
 https://stackoverflow.com/questions/34783391/why-i-couldnt-use-mount-bind-proc-pid-ns-mnt-to-another-file-in-ubuntu
 
+### About the Namespace ID in "/proc/PID/ns/NS-NAME"
+
+```
+$ sudo readlink /proc/self/ns/mnt
+mnt:[4026531840]
+```
+
+The ID is the  "inum" (inode number) field in `struct ns_common`.
+See the kernel function `ns_get_name()`.
+The initial `inum` values are defined in `include/linux/proc_ns.h`:
+```
+enum {
+	PROC_ROOT_INO		= 1,
+	PROC_IPC_INIT_INO	= 0xEFFFFFFFU,
+	PROC_UTS_INIT_INO	= 0xEFFFFFFEU,
+	PROC_USER_INIT_INO	= 0xEFFFFFFDU,
+	PROC_PID_INIT_INO	= 0xEFFFFFFCU,
+	PROC_CGROUP_INIT_INO	= 0xEFFFFFFBU,
+	PROC_TIME_INIT_INO	= 0xEFFFFFFAU,
+};
+```
+
+- For the PID NS, the allocation is dynamic, done in `create_pid_namespace(...)`, that
+  calls `ns_alloc_inum(ns) -> proc_aclloc_inum()`. That means that an ID can be reused.
+
+- For the mount NS, the initial definition is in `fs/proc/generic.c`: `PROC_DYNAMIC_FIRST`,
+  and the allocation is dynamic. That means that an ID can be reused.
+
 ### Mount Namespaces
-Provides an isolation of the list of mount points seend by the processes in each
+Provides an isolation of the list of mount points seen by the processes in each
 NS instance. Processes in each mount NS will see distinct single-directory
 hierarchies of files.
 
@@ -49,7 +77,7 @@ Mount namespaces have the desired property that running processes can only be mo
 into the namespace down the nested hierarchy.
 
 When a process creates a new mount namespace using clone(2) or unshare(2) with
-the CLONE_NEWNS flag, the mount point list for the new namespace **is a copy** of
+the `CLONE_NEWNS` flag, the mount point list for the new namespace **is a copy** of
 the caller's mount point list.  Subsequent modifications to the mount point list
 (mount(2) and umount(2)) in either mount  namespace  will  not  (by default)
 affect the mount point list seen in the other namespace.

@@ -53,6 +53,23 @@ strace -e trace=read,write,stat,openat
 - Connect a probe to a tracepoint: the hook calls the probe.
 - See https://www.kernel.org/doc/Documentation/trace/tracepoints.rst
 
+#### List of available tracepoints
+
+For each tracepoint you have a subdir with the format
+```
+$ sudo ls /sys/kernel/debug/tracing/events/
+```
+
+Or:
+```
+$ sudo tplist
+```
+
+Or:
+```
+$ sudo perf --list tracepoint
+```
+
 ### BPF
 |       | Kernel      | User                |
 |-------|-------------|---------------------|
