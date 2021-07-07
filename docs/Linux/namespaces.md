@@ -68,6 +68,14 @@ enum {
 - For the mount NS, the initial definition is in `fs/proc/generic.c`: `PROC_DYNAMIC_FIRST`,
   and the allocation is dynamic. That means that an ID can be reused.
 
+>
+> WARNING!!!
+>
+You may have been asking, why the inode I get from `stat /proc/self/ns/pid` is different
+from the value I get with `readlink /proc/self/ns/pid` ????
+
+BECAUSE YOU NEED to call stat with the `-L` option to dereference the symlink!!!!
+
 ### Mount Namespaces
 Provides an isolation of the list of mount points seen by the processes in each
 NS instance. Processes in each mount NS will see distinct single-directory

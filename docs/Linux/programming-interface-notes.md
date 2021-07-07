@@ -42,8 +42,8 @@ e.g. allow interactive users to run command in fg / bg.
 `/proc/[pid]/stack`: This file provides a symbolic trace of the function calls in
 this process's kernel stack.
 
-### Zombie vs orphan
-- Orphan: a process whose parent has terminated, but that is still in execution.
+### Zombie vs Orphan
+- Orphan: a process whose parent has terminated, but that it is still in execution.
 
 - Zombie: a process that has completed execution (i.e., called `exit()`), but has
   still an entry in the process table. The entry stays there until the parent
@@ -61,6 +61,12 @@ so that is has a chance to reap the child.
 >
 > More info: https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/
 >
+
+For containers using PID namespaces the kernel, when forgetting the original parent
+and finding the child reaper, may call `zap_pid_ns_processes()`.
+This has the effect of killing all the pids in that PID NS using `group_send_sig_info(SIGKILL, SEND_SIG_PRIV, pid)`
+This happens when the reaper is the parent that is exiting, and the parent
+has not other threads active that could reap.
 
 ### Create a session leader
 Use the `setsid()` syscall.
