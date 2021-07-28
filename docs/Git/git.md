@@ -279,8 +279,19 @@ Change email for the last 10 commits:
 git change-commits GIT_AUTHOR_EMAIL "old@email.com" "new@email.com" HEAD~10..HEAD
 ```
 
-## Clone only a single branch or tag
-Use the options `--branch <BRANCH-NAME | TAG-NAME> --depth 1`:
+## Clone
+
+- Only a single branch or tag: use `--single-branch --branch <BRANCH-NAME | TAG-NAME>`
+
+- Shallow clone: use ` --depth`. E.g. `--depth 1` will only clone the latest revision.
+
+Combined:
+
 ```
-git clone --depth 1 --branch Ubuntu-aws-5.4-5.4.0-1041.43_18.04.1 git://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-aws/+git/bionic
+git clone \
+  --depth 1 \
+  --branch Ubuntu-aws-5.4-5.4.0-1041.43_18.04.1 \
+  --single-branch \
+  git://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-aws/+git/bionic
+  DEST-FOLDER
 ```

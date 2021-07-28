@@ -43,3 +43,12 @@ Resolved and matches all types and fields.
 ## Kernel
 No specific kernel support required, if BTF is exposed, the BPF program can be loaded
 as a traditional BPF one.
+
+## Type of BPF Probes
+See `/sys/kernel/debug/tracing/events/...` and `/sys/kernel/debug/tracing/available_events`.
+
+- Tracepoints / raw tracepoints (includes any syscall enter / exit).
+- kprobes / kretprobes: any kernel func
+- fentry / fexit: any kernel func
+- LSM: LSM hooks in "security.h"
+- perf_events (used by BPF program type perf event)
