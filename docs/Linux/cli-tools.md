@@ -48,6 +48,15 @@ In a given range (`i,jd`):
 $ sed "2,14d" file.txt
 ```
 
+### Print only a given pattern found in a given line
+Make sed print only relevant pattern.
+E.g. only print the "..." part in the lines having the format "... bar". Do not
+print lines not having this pattern.
+
+```
+sed -n 's/ \+bar//p'
+```
+
 ## ss: socket statistics
 ```
 $ ss --tcp
@@ -128,6 +137,7 @@ E.g.: make grep print ONLY the next word after 'foo', and nothing else:
 ```
 $ grep -P -o 'foo \K[^ ]+'
 ```
+Or, used `sed -n 's///p'` ...
 
 ## getent: low-level host name resolution tool (nslookup alternative)
 > NOTE: getent can do much more: displays entries from databases, configured in

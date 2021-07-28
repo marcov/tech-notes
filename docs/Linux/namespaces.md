@@ -177,36 +177,36 @@ the mount namespace and remounts /sys/ inside it (by doing `mount --make-shared 
 
 #### Different ways to setup a network namespace
 - Docker:
-  * Network namespace ID: YES
-  * Network namespace NAME: NO
-    - The mount point for the net ns name is instead in `/run/docker/netns/`
-      Hack to have Docker namespaces show up in `ip netns ls`:
-      ```
-      sudo touch /run/netns/docker-1
-      sudo mount -o bind /proc/<CONTAINER_PID>/ns/net /run/netns/docker-1
-      sudo ip netns exec docker-1 ...
-      ```
-  * Network namespace INODE: YES (the container process)
+    - Network namespace ID: YES
+    - Network namespace NAME: NO
+        - The mount point for the net ns name is instead in `/run/docker/netns/`
+          Hack to have Docker namespaces show up in `ip netns ls`:
+          ```
+          sudo touch /run/netns/docker-1
+          sudo mount -o bind /proc/<CONTAINER_PID>/ns/net /run/netns/docker-1
+          sudo ip netns exec docker-1 ...
+          ```
+    - Network namespace INODE: YES (the container process)
 
 - Podman (root):
-  * Network namespace ID: YES
-  * Network namespace NAME: YES (cni-...)
-  * Network namespace INODE: YES (the container process)
+    * Network namespace ID: YES
+    * Network namespace NAME: YES (cni-...)
+    * Network namespace INODE: YES (the container process)
 
 - `unshare`:
-  * Network namespace ID: NO
-  * Network namespace NAME: NO
-  * Network namespace INODE: YES (the unshared process)
+    * Network namespace ID: NO
+    * Network namespace NAME: NO
+    * Network namespace INODE: YES (the unshared process)
 
 - `ip netns add NETNSNAME`:
-  * Network namespace ID: NO
-    - no NSID assigned by default.
-    - NSID can be set with `ip netns set NETNSNAME NSID` or at creation with
-      `ip netns add NETNSNAME NSID`.
-    - a NSID is set automatically when moving an interface to a named NSID:
-     `ip link set IFNAME netns NETNSNAME`
-  * Network namespace NAME: YES (cni-...)
-  * Network namespace INODE: NO
+    * Network namespace ID: NO
+        - no NSID assigned by default.
+        - NSID can be set with `ip netns set NETNSNAME NSID` or at creation with
+          `ip netns add NETNSNAME NSID`.
+        - a NSID is set automatically when moving an interface to a named NSID:
+          `ip link set IFNAME netns NETNSNAME`
+    * Network namespace NAME: YES (cni-...)
+    * Network namespace INODE: NO
 
 #### References
 https://serverfault.com/questions/961504/cannot-create-nested-network-namespace

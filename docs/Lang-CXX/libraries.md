@@ -1,7 +1,9 @@
-# Libraries
+# Libraries and Linking
 
+>
 > NOTE:
 > Do not confuse linking with loading!
+>
 
 ## Static Library (.a) - Statically Linked Library
 A Library that is linked statically in an executable, i.e. the executable self
@@ -84,13 +86,21 @@ Used for tstatic libraries / archives only.
 Wrap archives with `--start-group`, `--end-group` to allow specifying archives in
 any order; references resolution done also for circular references.
 
-## As needed / Not as needed
+### As needed / Not as needed
 `--no-as-needed` is the default linking mode for shared libraries  =>
 the library is always added as dependency (as shown by ldd), even if not used at
 all.
 
 `--as-needed` overrides default linking mode only include library as dependency if
 it is actually needed / contains symbols needed by other objects.
+
+### Statically link a single library
+Assuming you have the statically version of the lib installed (typically distributed
+in a -dbg package), this tells `ld` to switch to statically `libfoo`:
+
+```
+-Wl,-Bstatic -lfoo -Wl,-Bdynamic
+```
 
 ## pkg-config
 Given a library package name installed on the system, retrieve metadata about that library.

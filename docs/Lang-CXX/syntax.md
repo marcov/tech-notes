@@ -203,3 +203,28 @@ becomes
            #define arraycheck(a, b) a[b] || b[a]
 ```
 NOTE: with GCC, use the `-trigraphs` flag to enable trigraphs use.
+
+### Pointer to member functions (C++)
+
+A pointer to a member function can be used as a callback. You can pass it around
+as a C function pointer.
+To invoke the function, use the `.*` or `->*` operator:
+- left side: the class object instance (or a pointer to it).
+- right side: the pointer to the member fn.
+
+E.g.:
+```
+struct C
+{
+    void f(int n) { std::cout << n << '\n'; }
+};
+
+int main()
+{
+    void (C::* p)(int) = &C::f; // pointer to member function f of class C
+    C c;
+    (c.*p)(1);                  // prints 1
+    C* cp = &c;
+    (cp->*p)(2);                // prints 2
+}
+```

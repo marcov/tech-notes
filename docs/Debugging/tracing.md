@@ -40,6 +40,12 @@ Filtering by system call name:
 strace -e trace=read,write,stat,openat
 ```
 
+Useful options:
+- `e expr`: which event to trace, e.g. only specific syscalls.
+- `-f`: trace child processes as they are created
+- `-v`: print unabbreviated stuff
+- `-s 1024`: maximum string size to print
+
 ## Technology
 
 ## Probes (dynamic)

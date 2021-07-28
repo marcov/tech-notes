@@ -43,7 +43,11 @@ $ git format-patch -1 HEAD
 Apply patch with:
 ```
 $ git am < file.patch
+
+$ git am --3way 000x-...-file.path
 ```
+
+Use `--3way` to generate 3-way diff stuff when patching fails.
 
 ## rev-parse
 Get (short) commit hash of head
@@ -279,8 +283,28 @@ Change email for the last 10 commits:
 git change-commits GIT_AUTHOR_EMAIL "old@email.com" "new@email.com" HEAD~10..HEAD
 ```
 
-## Clone only a single branch or tag
-Use the options `--branch <BRANCH-NAME | TAG-NAME> --depth 1`:
+## Clone
+
+- Only a single branch or tag: use `--single-branch --branch <BRANCH-NAME | TAG-NAME>`
+
+- Shallow clone: use ` --depth`. E.g. `--depth 1` will only clone the latest revision.
+
+Combined:
+
 ```
-git clone --depth 1 --branch Ubuntu-aws-5.4-5.4.0-1041.43_18.04.1 git://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-aws/+git/bionic
+git clone \
+  --depth 1 \
+  --branch Ubuntu-aws-5.4-5.4.0-1041.43_18.04.1 \
+  --single-branch \
+  git://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-aws/+git/bionic
+  DEST-FOLDER
 ```
+
+## Switch to branches
+You can use `git switch BRANCH-NAME` instead of `git checkout ...`.
+
+## Restore files
+You can use `git restore --file ./PATH/TO/FILE` instead of `git checkout -- ./PATH/TO/FILE`.
+
+## Stash
+You can stash only staged changes with `git stash --staged --message "only stashing staged stuff"`.
