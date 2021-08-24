@@ -95,6 +95,10 @@ You cannot however change the dispostion for `SIGKILL` and `SIGSTOP`.
 The signal disposition is a **per-process** attribute. So the action will be the same
 **for all the threads**.
 
+### Signaling Yourself
+
+Use `raise(3)`. Can be used to do cleanup of specific signals like SIGSTOP and SIGSUSP (C-z).
+
 ## Threads
 
 ### Thread IDs
