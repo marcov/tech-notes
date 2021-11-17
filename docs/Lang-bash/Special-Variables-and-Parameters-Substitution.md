@@ -64,6 +64,14 @@ See also here: http://www.tldp.org/LDP/abs/html/parameter-substitution.html
 
 `${variable%%pattern}`: Remove from `${variable}` the longest pattern `${pattern}`.
 
+`"${!prefix@}"`: Expands to the names of variables whose names begin with `prefix`. Each variable name expands to a separate word.
+
+`${!name}`: Adds a indirection. Expands to `${${name}}`. E.g.:
+```bash
+$ /bin/sh -c 'foo=bar; bar=fax; echo ${!foo}'
+fax
+```
+
 E.g.
 ```bash
 var="foobar"

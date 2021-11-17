@@ -43,7 +43,11 @@ $ git format-patch -1 HEAD
 Apply patch with:
 ```
 $ git am < file.patch
+
+$ git am -3 000x-...-file.path
 ```
+
+Use `-3` to generate 3-way diff stuff when patching fails.
 
 ## rev-parse
 Get (short) commit hash of head

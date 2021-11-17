@@ -76,7 +76,6 @@ This will clear out the process controlling tty.
   `fd` is typically the slave fd of a pty master/slave pair.
 
 ## Signals
-
 Signal disposition: what the process does when it receives a specific signal. It can
 be one of:
 - TERM
@@ -94,6 +93,18 @@ You cannot however change the dispostion for `SIGKILL` and `SIGSTOP`.
 
 The signal disposition is a **per-process** attribute. So the action will be the same
 **for all the threads**.
+
+>
+> NOTE: Beware of the difference b/w signal masking & signal handing.
+> - A signal can be blocked individually by each thread (sigprocmask())
+> - The way a signal is handled it is the same for all the threads in the group (sigaction()).
+>
+
+If a signal handler is invoked while a system call or library function call is blocked, then either:
+- the call is automatically restarted after the signal handler returns; or
+- the call fails with the error EINTR.
+Which of these two behaviors occurs depends on the interface and whether or not the signal handler was  estab‐
+lished using the SA_RESTART flag (see sigaction(2)).  The details vary across UNIX systems; below, the details
 
 ### Signaling Yourself
 
@@ -132,11 +143,14 @@ of signals that the thread is currently blocking. Use `sigprocmask()` to change 
 mask.
 
 **NOTE**: you cannot "SIGKILL" a single thread ID without killing all the TIDs in the
-TGID (i.e. the PID). Quoting `pthread_kill(3)` (implemented using `tgkill()`):
+group (i.e. TGID or PID). Quoting `pthread_kill(3)` (implemented using `tgkill()`):
 >
-> Signal  dispositions  are process-wide: if a signal handler is installed, the handler will
-> be invoked in the thread,  but  if  the  disposition  of  the  signal  is  "stop",
-> "continue", or "terminate", this action will affect the whole process.
+> Signal  dispositions  are process-wide:
+> - if a signal handler is installed, that same handler will be invoked for all the
+>   threads in the group. Which thread wil run the handler? It's the thread (PID)
+>   that got the signal. Different threads cannot have different handlers!
+> - If the disposition of the  signal is STOP, CONT, TERMINATE, this action will
+>   affect all the threads of the process.
 >
 
 ### Threads and clone()

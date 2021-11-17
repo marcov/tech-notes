@@ -1,3 +1,7 @@
+# EBPF
+
+## Main Goals
+
 Portability:
 - ability to write a BPF program that works with different kernel version, where
 kernel data structures are different.
@@ -27,7 +31,7 @@ the kernel types, as if we had the kernel headers.
 $ bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h
 ```
 Your BPF program can just include a single `vmlinux.h` file.
-Missing #define Macros though :-(, but they can be found in `bpf_helpers.h`
+Missing `#define` macros though :-(, but they can be found in `bpf_helpers.h`
 
 ## Clang
 Clang support generating BPF programs with BTF relocation information, so that the
@@ -71,6 +75,12 @@ Rootkit - oriented:
  * used at entry: syscall completely skipped!
  * used at exit: alters a syscall return value, but the syscall is executed.
 
+`bpf_probe_read_user() / bpf_probe_read_user_str() / bpf_probe_write_user()`:
+read / write an argument from a syscall, or read an VM addres of a user space program.
+The address can be also passed via `skel->bss->ptr`.
+
+`bpf_copy_from_user()`: sleepable version of `bpf_probe_read_user()`. Can only be
+used in sleepable BPF progs.
 
 ## List BPF stuff
 List of BPF programs:
@@ -82,6 +92,9 @@ List of BPF programs:
 ```
 $ bpftool map
 ```
+
+List of all BTF info, including functions:
+`bpftool btf dump file /sys/kernel/btf/vmlinux format raw`
 
 ## Pinning BPF programs
 Normally, a BPF program requires the program that loaded it to be running, in order
@@ -142,10 +155,11 @@ Alternatively, can use pin the iterator to a bpffs file path:
 - Tail called programs must be of the same type of the caller.
   You have the option to declare the tail called BPF program to be of the same type,
   or leave a BPF program with a generic type, and use the helper functions
-  `bpf_progra__set_xxx()` to set a type before loading the program.
+  `bpf_program__set_xxx()` to set a type before loading the program.
 - They also need to match in terms of JIT compilation, thus either JIT compiled or
   only interpreted programs can be invoked, but not mixed together.
-- BPF tail call functions are paired with an array map used as jump table.
+- BPF tail call functions are paired with an prog array map used as jump table
+  (BPF_MAP_TYPE_PROG_ARRAY).
   Each entry of the map is a program fd. UM needs to configure it before loading the
   program. When BPF jumps to a tail call functions, it jumps to a fd #:
   `bpf_tail_call(ctx, &array_map_of_fds, __fd_number__);`
@@ -158,16 +172,26 @@ reduce the per instruction cost compared to the interpreter.
 Often instructions can be mapped 1:1 with native instructions of the
 underlying architecture.
 
-
 - Dynamic enable / disable is controlled with `/proc/sys/net/core/bpf_jit_enable`.
 - Permanently enable: `CONFIG_BPF_JIT_ALWAYS_ON`.
 
 ## Maps
 
+### Memory mapped
 You can memory maps a BPF map of type array. Declare the map with `BPF_F_MAPPABLE`.
 A limitation is that the map __cannot be read only from UM__, i.e. declared
 with `BPF_F_RDONLY`.
 
-## Map of Maps
-
+### Map of maps
 Limitations: you can only create a new inner map from UM.
+
+## BPF Links
+A `bpf_link` is an abstraction used to:
+- represent an attachment of a BPF program to a BPF hook point;
+- encapsulate ownership of an attached BPF program to a process, or to a file path
+  (via BPFFS). This allows to survive a user process exit.
+See: https://lore.kernel.org/bpf/20200228223948.360936-1-andriin@fb.com/
+
+## BPF spin locks
+Used to mutex access/updates to a single map element.
+
