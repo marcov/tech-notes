@@ -44,10 +44,10 @@ Apply patch with:
 ```
 $ git am < file.patch
 
-$ git am -3 000x-...-file.path
+$ git am --3way 000x-...-file.path
 ```
 
-Use `-3` to generate 3-way diff stuff when patching fails.
+Use `--3way` to generate 3-way diff stuff when patching fails.
 
 ## rev-parse
 Get (short) commit hash of head
