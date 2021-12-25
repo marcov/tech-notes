@@ -1,12 +1,12 @@
 site_name: Tech Notes
-site_description: Personal tech notes and documentation
-site_author: marco v
+site_description: Personal computer science technical notes and documentation
+site_author: Marco Vedovati
 repo_url: https://github.com/marcov/tech-notes
 site_url: https://docs.sba.lat
 docs_dir: docs
 
-#theme: readthedocs
-theme: mkdocs
+theme: readthedocs
+#theme: mkdocs
 
 #pages:
 #- Home:
