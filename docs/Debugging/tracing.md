@@ -20,6 +20,7 @@ Dynamic instrumentation (BPF, DTrace)
 - Uses ptrace
 
 ### perf
+- Found in the kernel source tree at "/tools/perf" (package: "linux-tools")
 - Kernel profiling & sampling, statistics
 - Sample first, analyze later
 - Can instrument tracepoints, kprobes, uprobes, USDT probes.
@@ -31,6 +32,13 @@ $ perf stat -e sched:sched_process_exec -I 1000
 
 - List sched tracepoints with `sudo perf list "sched:*"`
 - List all tracepoints with `sudo perf list | grep -i tracepoint`
+
+Get call-graph and other stuff for a PID (can be paired with flame graph generator):
+```
+sudo perf record -F max -ag -p PID
+#... let processes run for a while, then ctrl-c
+sudo perf report --stdio
+```
 
 ### strace
 - Trace system calls

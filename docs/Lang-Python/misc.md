@@ -15,3 +15,4 @@ Both uses builtins `__str__` or `__repr__` to display the object.
 Handy `which` implementations:
 - `shutil.which()`
 - `plumbum.local.which()`
+

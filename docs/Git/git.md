@@ -299,3 +299,12 @@ git clone \
   git://git.launchpad.net/~canonical-kernel/ubuntu/+source/linux-aws/+git/bionic
   DEST-FOLDER
 ```
+
+## Switch to branches
+You can use `git switch BRANCH-NAME` instead of `git checkout ...`.
+
+## Restore files
+You can use `git restore --file ./PATH/TO/FILE` instead of `git checkout -- ./PATH/TO/FILE`.
+
+## Stash
+You can stash only staged changes with `git stash --staged --message "only stashing staged stuff"`.
