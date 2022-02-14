@@ -308,3 +308,16 @@ You can use `git restore --file ./PATH/TO/FILE` instead of `git checkout -- ./PA
 
 ## Stash
 You can stash only staged changes with `git stash --staged --message "only stashing staged stuff"`.
+
+## Jump
+You can use the `git-jump` extension to jump to interesting stuff in an editor:
+- merge: `git jump merge [-- file/path]`
+- diff
+- grep
+
+## Fancy diff
+Use `--color-words` option to show changed words in a line in red / green color,
+instead of seeing the same line before / after the change.
+
+## Short status
+`git status -s`

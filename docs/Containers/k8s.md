@@ -73,3 +73,8 @@ E.g.:
 $ kubectl describe  pod -l app=myapp
 $ kubectl logs -f -l app=myapp
 ```
+
+Inspect a certificate from a secret:
+```
+k get secrets SECRET-NAME --template='{{index .data "tls.crt"}}' | base64 -d | openssl x509 -in - -text -noout
+```
