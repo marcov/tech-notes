@@ -1,6 +1,10 @@
 # VIM
 
 ## Generate a compilation database for YCM / ccls, ...
+
+Use `bear`!
+
+### Legacy
 Call `make ...` with `compiledb make ...`
 
 Install `compiledb`:

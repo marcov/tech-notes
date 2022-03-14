@@ -57,7 +57,6 @@ While the lock is held, shared_data is not volatile.
 When dealing with shared data, proper locking makes volatile unnecessary - and potentially harmful.
 The volatile storage class was originally meant for memory-mapped I/O registers.
 
-
 ## Syntactical elements definition
 ### Expression
 An operator with its arguments, a function call, a constant, a variable name, etc...
