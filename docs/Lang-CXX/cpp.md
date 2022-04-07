@@ -87,3 +87,21 @@ class D : private A    // 'private' is default for classes
     // z is not accessible from D
 };
 ```
+
+## Smart Pointers
+
+### Shared Pointer
+Shared pointer for a dynamically allocated uint8_t buffer.
+```
+std::shared_ptr<uint8_t> bufferPtr {new uint8_t[size]}, std::default_delete<uint8_t[]>()};
+```
+
+### Unique Pointer
+Unique pointer for a dynamically allocated uint8_t buffer.
+```
+std::unique_ptr<uint8_t []> bufferPtr {new uint8_t[size]};
+//
+//...
+//
+std::unique_ptr<uint8_t[]> anotherPtr = std::move(bufferPtr);
+```

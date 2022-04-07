@@ -25,3 +25,19 @@ In this case `GET_PIN_NAME(MY_PINNUM)` will give you `PIN_3`.
 
 More details:
 https://gcc.gnu.org/onlinedocs/cpp/Stringification.html
+
+## Stringify
+
+```
+enum {
+    ERR_FOO = 0,
+    ERR_BAR,
+    ERR_FAZ,
+    ERR_BAZ,
+};
+
+#define ERR_STRING(err)  #err
+
+
+std::cout << "Err string of  ERR_FOO is " << ERR_STRING(ERR_FOO) << std::endl;
+```
