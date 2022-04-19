@@ -76,6 +76,10 @@ from the value I get with `readlink /proc/self/ns/pid` ????
 
 BECAUSE YOU NEED to call stat with the `-L` option to dereference the symlink!!!!
 
+### init process and namespaces
+- A process that is init in a PID namespace, cannot move to a different existing PID namespace.
+- However it can move to a different existing mount namespace.
+
 ### Mount Namespaces
 Provides an isolation of the list of mount points seen by the processes in each
 NS instance. Processes in each mount NS will see distinct single-directory
