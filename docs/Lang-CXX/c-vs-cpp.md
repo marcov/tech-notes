@@ -21,6 +21,26 @@ StructType myStruct = { .foo = 1, .bar = 2 };
 
 Info: https://en.cppreference.com/w/cpp/language/aggregate_initialization#Designated_initializers
 
+### Zero Initialization
+
+Empy initializer list `{}` it's used for zero initialization.
+It is valid in C++ but not in C until C99:
+```
+//
+// NOTE:
+// - cannot assign to a struct = {0} to make it zero intialized.
+// - the effect is same as: A a{}; or A a = {};
+//
+struct MyStruct foo = {};
+// or equivalent
+struct MyStruct foo{};
+// or equivalent
+struct MyStruct foo = MyStruct();
+
+// For arrays, "= {}" is equivalent to "= {0}"
+char myArray[1234] = {};
+```
+
 ### Variable Length Arrays (VLAs) are NOT allowed in C++
 ```
 void foobar(unsigned int n)

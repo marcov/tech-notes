@@ -141,6 +141,31 @@ char* foo = {'c', 'i', 'a', 'o'};
    1,2,3,a = 4;
    ```
 
+### Compound literals
+
+Constructs an unnamed object of specified type (which may be struct, union, or
+even array type) in-place: `( type ) { initializer-list }`
+
+```c
+struct my_struct
+{
+    int a;
+    char b;
+    int c[12];
+};
+
+void fx(struct my_struct s)
+{
+    (void)s;
+}
+
+int main(void)
+{
+    fx((struct my_struct){1, 2, {1, 2, 3}});
+    return 0;
+}
+```
+
 ### Enumerations (C++)
 #### Unscoped Enumerations
 > NOTE: `[ : type ]` here means may or may not have inheritance from `: type` specified.
