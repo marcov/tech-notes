@@ -183,9 +183,18 @@ $ git reset HEAD~
 $ git reset HEAD
 ```
 
-## Show a specific file revision
+## Show
+
+### Show changes done in a commit
+
+Equivalent to `git difftool -d REVISION^!`:
 ```
-$ git show REV_NAME:./path_of_file
+$ git show REVISION
+```
+
+### Show a specific file revision
+```
+$ git show REVISION:./path_of_file
 ```
 
 ## Delete a branch

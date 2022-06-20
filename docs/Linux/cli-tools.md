@@ -13,6 +13,7 @@ $ sudo virt-customize -a ubuntu-16.04-server-cloudimg-amd64-disk1.img --root-pas
 ```
 
 Or also:
+
 ```
 # guestfish --rw -a <qcow2 image file name>
 ><fs> run
@@ -20,10 +21,21 @@ Or also:
 ><fs> mount /dev/vda1 /
 ><fs> vi /etc/shadow
 ```
-## REMOVE the `!!` from the file
+#NOTE: REMOVE the `!!` from the file
 ```
 ><fs> umount /
 ><fs> exit
+```
+
+Or also:
+
+```console
+# modprobe nbd max_part=8 &&
+# qemu-nbd -c /dev/nbd0 image.qcow2
+# mount /dev/nbd0p1 /mnt
+# chroot a sh -c "echo 'root:password' | chpasswd"
+# umount /mnt
+# qemu-nbd -d /dev/nbd0
 ```
 
 ## nohup: keep a command running even when the terminal is closed
@@ -80,6 +92,10 @@ $ start-stop-daemon -S -b -x /root/usb/coredns --  -conf /root/usb/Corefile -pid
 
 ### Save buffer to file:
 `prefix` + `:`, type `save-buffer filename.txt`
+
+### Move pane to a new window
+
+While on current pane: `prefix :break-pane`
 
 ## update-alternatives
 ### Basic usage

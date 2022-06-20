@@ -69,7 +69,7 @@ See `/sys/kernel/debug/tracing/events/...` and `/sys/kernel/debug/tracing/availa
 
 Rootkit - oriented:
 - `bpf_probe_write_user`: Writes the memory of a user space thread (subject to TOC-TOU limitations).
-  It can corrupt user memory!!
+  It can corrupt user memory!
 
 - `bpf_override_return`:
  * used at entry: syscall completely skipped!
