@@ -47,7 +47,7 @@ $ sudo readlink /proc/self/ns/mnt
 mnt:[4026531840]
 ```
 
-The ID is the  "inum" (inode number) field in `struct ns_common`.
+The ID is the "inum" (inode number) field in `struct ns_common`.
 See the kernel function `ns_get_name()`.
 The initial `inum` values are defined in `include/linux/proc_ns.h`:
 ```
@@ -74,7 +74,7 @@ enum {
 You may have been asking, why the inode I get from `stat /proc/self/ns/pid` is different
 from the value I get with `readlink /proc/self/ns/pid` ????
 
-BECAUSE YOU NEED to call stat with the `-L` option to dereference the symlink!!!!
+BECAUSE YOU NEED to call stat with the `-L` option to dereference the symlink!!!
 
 ### init process and namespaces
 - A process that is init in a PID namespace, cannot move to a different existing PID namespace.
@@ -112,7 +112,17 @@ User namespaces can be nested; that is, each user namespace—except
 the initial ("root") namespace—has a parent user namespace, and can
 have zero or more child user namespaces.  The parent user namespace
 is the user namespace of the process that creates the user namespace
-via a call to unshare(2) or clone(2) with the CLONE_NEWUSER flag.
+via a call to unshare(2) or clone(2) with the `CLONE_NEWUSER` flag.
+
+From a process, you can reassociate to a user namespace with
+`setns(..., CLONE_NEWUSER)`, but only if the process is single threaded. In kernel code, see
+`linux:userns_install()` check on `thread_group_empty()`.
+
+Upon  successfully joining a user namespace, a process is granted all
+capabilities in that namespace.
+
+You cannot associate back to the original user NS though, because once you leave
+a parent user NS, you lose all capabilities in that NS and they cannot be regained.
 
 ### Network Namespaces
 Network namespaces cannot be nested. That's because, after all, an network device
