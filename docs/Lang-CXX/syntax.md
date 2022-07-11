@@ -24,6 +24,8 @@ void example3(void) { /* definition between braces */ }
 ```
 
 ## volatile
+
+### Linux kernel perspective
 Sum up from: https://lwn.net/Articles/233479/
 
 The purpose of volatile is to force an implementation to **suppress optimizations**
@@ -54,10 +56,30 @@ While the lock is held, shared_data is not volatile.
 
 > "Data isn't volatile - _accesses_ are volatile".
 
-When dealing with shared data, proper locking makes volatile unnecessary - and potentially harmful.
-The volatile storage class was originally meant for memory-mapped I/O registers.
+When dealing with shared data, proper locking makes volatile unnecessary - and
+potentially harmful. The volatile storage class was originally meant for
+memory-mapped I/O registers.
+
+### More on volatile
+Volatile is useless for multi-threaded applications. it des **NOT**:
+- provide any synchronization,
+- create memory fences,
+- ensure the order of execution of operations,
+- make operations atomic.
+
+It should be used as a hint to the compiler similarly to "const".
+
+From "The C Programming Language" book:
+
+>Do not use volatile except in low-level code that deals directly with
+>hardware.
+>
+>Do not assume volatile has special meaning in the memory model. It does not.
+>It is not -- as in some later languages -- a synchronization mechanism. To get
+>synchronization, use atomic, a mutex, or a condition_variable.
 
 ## Syntactical elements definition
+
 ### Expression
 An operator with its arguments, a function call, a constant, a variable name, etc...
 
