@@ -246,3 +246,17 @@ tui enable
 ```
 tui disable
 ```
+
+## Lock execution to a single thread
+
+```
+(gdb) help set scheduler-locking
+Set mode for locking scheduler during execution.
+off    == no locking (threads may preempt at any time)
+on     == full locking (no thread except the current thread may run)
+          This applies to both normal execution and replay mode.
+step   == scheduler locked during stepping commands (step, next, stepi, nexti).
+          In this mode, other threads may run during other commands.
+          This applies to both normal execution and replay mode.
+replay == scheduler locked in replay mode and unlocked during normal execution.
+```

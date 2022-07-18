@@ -32,3 +32,9 @@ Capture and show flamegraph, call stack.
 $ sudo perf record --call-graph dwarf EXECUTABLE
 $ hotspot perf.data
 ```
+
+### Debugging stack
+
+- `stacksize`
+- `pstack`: dump the stack for all threads of a process
+- `valgrind --tool=drd --show-stack-usage=yes`

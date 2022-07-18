@@ -23,7 +23,7 @@ Info: https://en.cppreference.com/w/cpp/language/aggregate_initialization#Design
 
 ### Zero Initialization
 
-Empy initializer list `{}` it's used for zero initialization.
+Empty initializer list `{}` it's used for zero initialization.
 It is valid in C++ but not in C until C99:
 ```
 //
