@@ -75,6 +75,13 @@ volatile type.
 It is only in places where shared data is accessed without locks (or explicit
 barriers) that a construct like ACCESS_ONCE() is required.
 
+### READ_ONCE()
+
+Pretty much similar to ACCESS_ONCE():
+```
+#define __READ_ONCE(x)	(*(const volatile __unqual_scalar_typeof(x) *)&(x))
+```
+
 ## What the compiler can / cannot do
 
 ### Can merge multiple writes to a shared variable with a single one (even with locks)
@@ -178,7 +185,7 @@ The compiler:
 - cannot move A after the region: it cannot move down across a release.
 
 In addition, for sequential consistent model, you cannot reorder
-require/release, i.e. you cannot move an acquire (read) before a release
+require/release, e.g. you cannot move an acquire (read) before a release
 (store).
 
 ---
@@ -371,7 +378,11 @@ Gets optimized the hell out of it, exactly as if using plain int for foo:
    0x100003f8a <main()+26>:     jmp    0x100003f80 <main()+16>
 ```
 
-By using:
+This was observed with `clang-12 -03`.
+
+---
+
+By using `volatile`:
 ```
 static inline void loop(volatile int& bar)
 {
@@ -392,22 +403,56 @@ loop(foo);
 you force the compiler to always do a memory access (the three stores gets
 folder into a single store of imm. 3).
 
-If we insert a library call to an opaque function (even if the call is not a
-syscall that "gives" the variable address to another thread) that is enough
-to act as a barrier and make all visible store and the load happens.
+---
+
+If we insert a library call to an opaque function before the loop (even if we
+know the call takes the argument as read only, and _APPARENTLY_ event if the
+function argument is `const int*`) then things starts to change:
 
 ```
 int foo;
-foo = 1; // not visible, elided
+foo = 1;
 
-foo = 2; // store is visible, done
-sscanf("ciao 1234", "%*s %d", &foo);
-foo = 3; // store is visible, done
+foo = 2;
+printf("foo: %p\n", &foo);
 
-while (foo) { // load is not folded.
+...
+```
+
+- if the loop is a `sleep(1)`, sleep can be considered as another opaque function,
+so it behaves again as a barrier and there is no folding:
+```
+...
+
+while (foo) {
     sleep(1);
 }
 ```
+
+- if the loop is just incrementing a local counter
+
+  * plain `int` makes the compiler fold and optimize out loads.
+    ```
+    ...
+
+    int ctr = 0;
+    while (foo) {
+        ctr++;
+    }
+    printf("ctr is %d\n", ctr);
+    ```
+
+  * declaring `foo` as `std::atomic` acts as a barrier and forces loads.
+    ```
+    ...
+
+    int ctr = 0;
+    while (foo) {
+        ctr++;
+    }
+    printf("ctr is %d\n", ctr);
+    ```
+---
 
 Atomics starts to have sense when e.g. moving the variable as static, instead of
 local. Now, using atomic instead of plain int prevent the compiler to optimize
