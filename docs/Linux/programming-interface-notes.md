@@ -43,15 +43,16 @@ e.g. allow interactive users to run command in fg / bg.
 this process's kernel stack.
 
 ### Zombie vs Orphan
-- Orphan: a process whose parent has terminated, but that it is still in execution.
+- Orphan: a process whose parent has terminated, but that it is still in
+  execution.
 
-- Zombie: a process that has completed execution (i.e., called `exit()`), but has
-  still an entry in the process table. The entry stays there until the parent
-  retrieves the child exit status using `waitpid()`.
+- Zombie: a process that has completed execution (i.e., called `exit()`), but
+  has still an entry in the process table. The entry stays there until the
+  parent retrieves the child exit status using `waitpid()`.
 
 In both cases, when the parent dies / terminates without calling `wait()`, the
-orphan or zombie child is "adopted" by init (it is `wait()`'ed by init) and it is
-hence reaped.
+orphan or zombie child is "adopted" by init (it is `wait()`'ed by init) and it
+is hence reaped.
 
 *Reaping* = the action of calling `waitpid()` on a process.
 
@@ -74,6 +75,16 @@ This will clear out the process controlling tty.
 - A new pty master/slave pair is allocated with `posix_openpt()`.
 - The session leader acquires a controlling terminal with `ioctl(fd, TIOCSCTTY, ...)`
   `fd` is typically the slave fd of a pty master/slave pair.
+
+### Making a child exit
+
+When you need a child to exit, it should call `_exit(retno)` and not
+`exit(retno)`.
+
+`exit(retno)` causes all `atexit(...)` registered handlers to fire, and e.g. all
+temporary files created with `tmpfile()` to be deleted.
+
+Besides, the raw `_exit()` terminates only the calling thread.
 
 ## Threads
 ### Thread IDs
