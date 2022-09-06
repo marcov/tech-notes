@@ -52,13 +52,16 @@ as a traditional BPF one.
 See `/sys/kernel/debug/tracing/events/...` and `/sys/kernel/debug/tracing/available_events`.
 
 - tracepoints / raw tracepoints (includes any syscall enter / exit).
-- kprobes / kretprobes: any kernel func
-- `fentry` / `fexit`: any kernel func
+- `kprobe` / `kretprobe`: any kernel func
+- `fentry` / `fexit`: any kernel func (need trampoline support for the architecture!)
 - LSM: LSM hooks in "security.h"
 - perf_events (used by BPF program type perf event)
 - `fmod_ret`: override UM function and syscalls. Returns an error or a fake result.
 - `bpf_iter`: iterator over various stuff, e.g. list of all currecnt task structures.
 
+If you hook on exit path (`fexit` & `kretprobe`) you may not be able to retrieve
+the function arguments. The regiters holding the arguments at the functio entry
+could be clobbered by the function execution.
 
 ## Useful helper functions
 - `bpf_get_current_pid_tgid`: returns PID / TGID of a thread.
@@ -139,6 +142,13 @@ static const char * const reg_type_str[] = {
 };
 ```
 
+If loading bpf code results in this error, it means you are attempting to read
+a structure field that your kernel does not have:
+```
+180: (85) call unknown#195896080
+invalid func unknown#195896080
+```
+
 ## BPF iterator
 
 - Declare the program with SEC("iter/task"). See kernel code for all possible `"iter/hook"`
@@ -195,3 +205,25 @@ See: https://lore.kernel.org/bpf/20200228223948.360936-1-andriin@fb.com/
 ## BPF spin locks
 Used to mutex access/updates to a single map element.
 
+## CORE
+
+Thanks to CORE you can write bpf code that supports different structure formats
+for the different kernel version. But, make sure to declare any alternative
+version of a default struct foobar (defined in vmlinux.h ), as struct
+`foobar___v1`, struct `foobar___v2` with **exactly 3** underscores!
+
+Quoting some libbpf code in the kernel:
+
+```
+ * 1. For given local type, find corresponding candidate target types.
+ *    Candidate type is a type with the same "essential" name, ignoring
+ *    everything after last triple underscore (___). E.g., `sample`,
+ *    `sample___flavor_one`, `sample___flavor_another_one`, are all candidates
+ *    for each other. Names with triple underscore are referred to as
+ *    "flavors" and are useful, among other things, to allow to
+ *    specify/support incompatible variations of the same kernel struct, which
+ *    might differ between different kernel versions and/or build
+ *    configurations.
+```
+
+Use `bpf_core_field_exists()` to select what of the struct to use to read data.
