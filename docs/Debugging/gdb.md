@@ -260,3 +260,24 @@ step   == scheduler locked during stepping commands (step, next, stepi, nexti).
           This applies to both normal execution and replay mode.
 replay == scheduler locked in replay mode and unlocked during normal execution.
 ```
+
+## Kill process, but make it look like an accident
+
+x86_64 version:
+```console
+$ gdb -p PID -batch -ex 'set {short}$rip = 0x050f' -ex 'set $rax=231' -ex 'set $rdi=0' -ex 'cont'
+```
+
+Explanation:
+
+- `set {short}$rip = 0x050f`: write `0f 05` (i.e. syscall) at the location RIP
+(program counter) is pointing to.
+- `set $rax=231`: set RAX register to 231 (i.e. `__NR_exit_group` syscall number)
+- `set $rdi=0`: set RDI register to 0 (i.e. 0 as syscall argument)
+
+aarch64 version:
+```console
+$ gdb -p "$1" -batch -ex 'set {int}$pc = 0xd4000001' -ex 'set $w8=94' -ex 'set $x0=0' -ex 'cont'
+```
+
+Similar to x86, it calls `svc #0` instead of `syscall` with the right syscall number.
