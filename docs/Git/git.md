@@ -278,18 +278,36 @@ $ git fetch origin BRANCH-NAME:BRANCH-NAME
 ```
 
 ## Rewrite previous commits username and emails
+
+Via this `change-commits` alias:
 ```
 git config --global alias.change-commits '!'"f() { VAR=\$1; OLD=\$2; NEW=\$3; shift 3; git filter-branch --env-filter \"if [[ \\\"\$\`echo \$VAR\`\\\" = '\$OLD' ]]; then export \$VAR='\$NEW'; fi\" \$@; }; f"
 ```
 
-Change the author:
+E.g., change the author:
 ```
 git change-commits GIT_AUTHOR_NAME "old name" "new name"
 ```
 
-Change email for the last 10 commits:
+change email for the last 10 commits:
 ```
 git change-commits GIT_AUTHOR_EMAIL "old@email.com" "new@email.com" HEAD~10..HEAD
+```
+
+List of commit envs:
+
+```
+GIT_AUTHOR_NAME is the human-readable name in the “author” field.
+
+GIT_AUTHOR_EMAIL is the email for the “author” field.
+
+GIT_AUTHOR_DATE is the timestamp used for the “author” field.
+
+GIT_COMMITTER_NAME sets the human name for the “committer” field.
+
+GIT_COMMITTER_EMAIL is the email address for the “committer” field.
+
+GIT_COMMITTER_DATE is used for the timestamp in the “committer” field.
 ```
 
 ## Clone
