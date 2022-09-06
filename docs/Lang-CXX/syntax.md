@@ -1,22 +1,30 @@
 # C / C++
 
 ## Declaration vs Definition
-- Declaration: specify the properties of an identifier.
+
+### Declaration
+
+Specify the properties of an identifier:
+
   * only specifies the type of a variable, not its value.
   * only specifies the type signature of a function, not its body.
 
-Examples of declarations that are NOT definitions, in C:
+Examples of declarations (**NOT** definitions) in C:
 ```
 extern char example1;
 extern int example2;
 void example3(void);
 ```
 
-- Definition:
+### Definition
+
   * assign a value to variables
   * supply the implementation body to a function
 
-Examples of declarations that are definitions, again in C:
+A definition is _always_ _also_ a declaration, but not vice versa.
+Definitions are super-set of declarations.
+
+Examples of definitions, again in C:
 ```
 char example1; /* Outside of a function definition it will be initialized to zero.  */
 int example2 = 5;
