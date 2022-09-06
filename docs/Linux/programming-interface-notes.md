@@ -174,3 +174,50 @@ From the glibc manual:
     - sigfillset(3) does not include these two signals when it
     creates a full signal set.
 
+## pthreads and TCB
+
+The thread control block (TCB) for pthread stores a (struct pthread) structure.
+Its address is stored in the FS register:
+
+More details:
+- https://fasterthanli.me/series/making-our-own-executable-packer/part-13
+- `struct pthread` definition inside glibc `nptl/descr.h`.
+- glibc `nptl/allocatestack.c`
+
+TCB and TLS areas sits at the end of the thread stack:
+- For x86, TLS is before the struct.
+- For arm64, TLS is after (struct pthread).
+
+```
+Thread stack:
+                address stored in CPU FS register ($fs_base)
+                                 ^
+                                 |
+ [ stack start            |               stack top ]
+ ^                      | TLS  | TCB <-------------.
+ |                             | struct pthread    |
+ |                             | {                 |
+ |                                    tcbhead_t    |
+ |                                    {            |
+ |                                        tcb ->---`
+ |                                    }
+ |
+ |                                   stackblock ->-.
+ |                                                 |
+ |                               }                 v
+ `-------------------------------------------------`
+```
+
+The `pthread_t thread_id` is in fact the address of the TCB.
+
+DTV: Dynamic thread vector, which is a mapping from module ID to
+thread-local storage (?)
+
+### glibc details
+
+`struct pthread` contains thread specific attributes and information.
+(`struct pthread`) == (`pthread_t` made as a pointer)
+
+- `stackblock` -> base returned from mmap in `allocate_stack()`
+- `stackblock_size` -> size passed to mmap in `allocate_stack()`. Includes `guardsize`.
+
