@@ -164,7 +164,9 @@ $ getent ahosts google.com
 $ getent hosts localhost
 ```
 
-## SSH port forwarding
+## SSH
+
+### SSH port forwarding
 Use `ssh -L local-port:host-addr:host-port -N [-f]`.
 
 - `-L local-port:host:host-port`: Forward the `local-port` TCP connection to the given
@@ -190,6 +192,17 @@ $ ssh -L 5901:127.0.0.1:5901 -N -f -p SSH-PORT -l pi example.com
 ```
 $ xtigervncviewer
 ```
+
+### Do not store host keys fingerprints to `~/.ssh/known_hosts`
+
+```
+Host 10.* 192.168.* 172.*
+    UserKnownHostsFile /dev/null
+    StrictHostKeyChecking no
+```
+
+NOTE: `Host` can be a single host, or a white space separated list. Use `*` to
+define patterns.
 
 ## mtr - my tracerouter
 `mtr` combines the functionality of the traceroute and ping programs in a single
