@@ -213,3 +213,12 @@ See a certificate content:
 ```
 $ openssl x509 -text -noout -in /PATH/TO/THE/CERT.crt
 ```
+
+## copy _ALL_ files from a directory
+
+Use the `-T` option.
+
+This copies all files in `/source-dir` into `/dest-dir`.
+```console
+$ cp -aT /source-dir /dest-dir
+```
