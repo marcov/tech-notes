@@ -261,6 +261,27 @@ step   == scheduler locked during stepping commands (step, next, stepi, nexti).
 replay == scheduler locked in replay mode and unlocked during normal execution.
 ```
 
+## Following child on fork
+
+If you want to follow the child process instead of the parent process, use the
+command set follow-fork-mode.
+
+```
+set follow-fork-mode child
+```
+(the default is `parent` instead of `child`)
+
+you can follow both with:
+
+```
+set detach-on-fork off
+```
+(the default is `on` instad of `off`)
+
+Both processes will be held under the control of GDB. One process (child or
+parent, depending on the value of follow-fork-mode) is debugged as usual, while
+the other is held suspended.
+
 ## Kill process, but make it look like an accident
 
 x86_64 version:
