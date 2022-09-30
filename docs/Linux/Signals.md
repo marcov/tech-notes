@@ -61,6 +61,19 @@ else
 }
 ```
 
+### SIGCHLD
+
+The parent receives this signal when one of its children change of state (could be
+suspend, continue or exit). Use wait to figure  out what happened.
+
+### wait() / waitpid() and wait status
+
+- WIFEXITED(): The process exited by calling exit(). Get the return code with
+  WEXITSTATUS().
+
+- WIFSIGNALED(): The process exited by the reception of a signal whose
+  disposition is to terminate. Get the return code WTERMSIG().
+
 ### Signaling Yourself
 
 Use `raise(3)`. Can be used to do cleanup of specific signals like SIGSTOP and SIGSUSP (C-z).
