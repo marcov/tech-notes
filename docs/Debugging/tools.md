@@ -13,10 +13,18 @@ E.g.:
 
 NOTE: if there's a fentry/fexit on the function call, it will not be shown!
 
+Run a command and capture all its kernel functions calls:
 ```console
-# trace-cmd record -p function_graph -g copy_mnt_ns -O nofuncgraph-irqs -F unshare -m /bin/true
+# trace-cmd record -p function_graph -O nofuncgraph-irqs -F unshare -m /bin/true
 # trace-cmd report | less
 ```
+
+Capture a specific kernel function (and all functions it calls), for any process:
+```console
+# trace-cmd record -p function_graph -O nofuncgraph-irqs -g __x64_sys_lseek
+```
+
+`-F` and `-g` options can be used together.
 
 https://www.youtube.com/watch?v=JRyrhsx-L5Y
 
