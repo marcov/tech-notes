@@ -5,7 +5,8 @@ repo_url: https://github.com/marcov/tech-notes
 site_url: https://docs.sba.lat
 docs_dir: docs
 
-theme: readthedocs
+theme: alabaster
+#theme: readthedocs
 #theme: mkdocs
 
 #pages:
