@@ -2,7 +2,10 @@
 
 ## Filter a dictionary by key or value
 ```
-dict(filter(lambda item: item[0] in ('USER','HOME', 'PWD'), os.environ.items()))
+envs = filter(lambda item: item[0] in ('USER','HOME', 'PWD'), os.environ.items())
+
+dict(envs) # Get a dictionary
+next(envs) # Get the next element.
 ```
 
 ## `reduce()`: apply a function _cumulatively_ to a list
