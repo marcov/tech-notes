@@ -57,10 +57,10 @@ See `/sys/kernel/debug/tracing/events/...` and `/sys/kernel/debug/tracing/availa
 - LSM: LSM hooks in "security.h"
 - perf_events (used by BPF program type perf event)
 - `fmod_ret`: override UM function and syscalls. Returns an error or a fake result.
-- `bpf_iter`: iterator over various stuff, e.g. list of all currecnt task structures.
+- `bpf_iter`: iterator over various stuff, e.g. list of all current task structures.
 
 If you hook on exit path (`fexit` & `kretprobe`) you may not be able to retrieve
-the function arguments. The regiters holding the arguments at the functio entry
+the function arguments. The registers holding the arguments at the function entry
 could be clobbered by the function execution.
 
 ## Useful helper functions
