@@ -2,8 +2,9 @@
 
 ## Show diff between a revision and its parent
 
+These two commands are equivalent:
+
 ```
-# There are equivalent!
 $ git diff <REV>^!
 $ git diff <REV>~..<REV>
 ```
@@ -39,7 +40,6 @@ Create patch e.g. from the last commit:
 $ git format-patch -1 HEAD
 ```
 
-
 Apply patch with:
 ```
 $ git am < file.patch
@@ -50,7 +50,7 @@ $ git am --3way 000x-...-file.path
 Use `--3way` to generate 3-way diff stuff when patching fails.
 
 ## rev-parse
-Get (short) commit hash of head
+Get (short) commit hash of `HEAD`
 ```
 $ git rev-parse HEAD
 
@@ -105,10 +105,12 @@ $ git add --patch
 ```
 
 ## Git rebase
-Can be used for:
-* `git rebase -i master`: move a set of commits on the top, instead of merging.
-* `git rebase -i COMMIT-ID`: edit/squash a set of commits (pick, drop, reword commit message, squash).
-* To rebase from a common ancestor, use `git merge-base HEAD master`
+
+Use `rebase` for:
+
+- `git rebase -i master`: move a set of commits on the top, instead of merging.
+- `git rebase -i COMMIT-ID`: edit/squash a set of commits (pick, drop, reword commit message, squash).
+- To rebase from a common ancestor, use `git merge-base HEAD master`
 
 ```
 $ git pull --rebase <mybranch>
