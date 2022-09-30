@@ -54,6 +54,38 @@ destructor is properly called. The destructor are called from the deepest inheri
 level up to the base class.
 Making a destructor virtual guarantees that all destructors are called.
 
+## string_view
+
+Lightweight non-owning read-only view into a subsequence of a string.
+
+Instead of creating a full string with storage, it's just a string-like object
+with a reference and a size to some memory where the string is stored.
+
+Handy e.g. to:
+- allow string-like `==` comparisons without creating a string out of a `const char*`:
+```cpp
+const char* foo = get_foo();
+if (std::string_view{foo} == "1234") {
+    ...
+}
+```
+
+Create a `std::string`-like object out of a string literal, without the object
+being created by copying the data from the string literal into the object.
+```cpp
+std::string_view good{"a string literal"};
+```
+
+## std::string operator s
+
+It mainly allows to create a string out of a string literal that includes `\0`.
+E.g. in the example below, without `s`, `str` would only include the characters
+"foo".
+```cpp
+std::string str = "foo\0bar"s;
+```
+
+Or to get a substring out of a string:
 ## Kind of inheritances
 ```
 class A
