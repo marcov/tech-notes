@@ -1,15 +1,18 @@
-# EBPF
+# eBPF
 
 ## Main Goals
 
 Portability:
+
 - ability to write a BPF program that works with different kernel version, where
 kernel data structures are different.
 
 Solutions:
+
 a. Embed your BPF C program as string, and use BCC that builds the BPF on the fly
   using the kernel headers
 CONS:
+
 - LLVM is a big binary,
 - resource-heavy,
 - slow,
@@ -17,6 +20,7 @@ CONS:
 - compilation errors are only found at runtime.
 
 b. CO-RE. Components:
+
 - BTF type information
 - Clang able to use write BTF relocations
 - libbpf (user space BPF loader library): adjust BPF compiled code to the specific
@@ -56,14 +60,18 @@ See `/sys/kernel/debug/tracing/events/...` and `/sys/kernel/debug/tracing/availa
 - `fentry` / `fexit`: any kernel func (need trampoline support for the architecture!)
 - LSM: LSM hooks in "security.h"
 - perf_events (used by BPF program type perf event)
-- `fmod_ret`: override UM function and syscalls. Returns an error or a fake result.
+- `fmod_ret`: override UM function and syscalls return code. E.g. return a
+  syscall error or a fake int result.
+  * can only be hooked to a "security_" prefixed function.
 - `bpf_iter`: iterator over various stuff, e.g. list of all current task structures.
+- `syscall`: a program that can call sycalls.
 
 If you hook on exit path (`fexit` & `kretprobe`) you may not be able to retrieve
 the function arguments. The registers holding the arguments at the function entry
 could be clobbered by the function execution.
 
 ## Useful helper functions
+
 - `bpf_get_current_pid_tgid`: returns PID / TGID of a thread.
 - `bpf_d_path`:  returns full path for given **struct path** object.
    **NOTE**: it is only allowed in a set of functions, see `btf_allowlist_d_path`
@@ -71,16 +79,20 @@ could be clobbered by the function execution.
 - `bpf_send_signal`: raises a signal on the current thread.
 
 Rootkit - oriented:
-- `bpf_probe_write_user`: Writes the memory of a user space thread (subject to TOC-TOU limitations).
-  It can corrupt user memory!
+
+- `bpf_probe_write_user`: Writes the memory of a user space thread (subject to
+  TOC-TOU limitations). It can corrupt user memory!
 
 - `bpf_override_return`:
+
+ * Only for kernel functions defined with `ALLOW_ERROR_INJECTION(...)`
+ * Needs a kernel with `CONFIG_BPF_KPROBE_OVERRIDE`
  * used at entry: syscall completely skipped!
  * used at exit: alters a syscall return value, but the syscall is executed.
 
 `bpf_probe_read_user() / bpf_probe_read_user_str() / bpf_probe_write_user()`:
-read / write an argument from a syscall, or read an VM addres of a user space program.
-The address can be also passed via `skel->bss->ptr`.
+read / write an argument from a syscall, or read an VM addres of a user space
+program. The address can be also passed via `skel->bss->ptr`.
 
 `bpf_copy_from_user()`: sleepable version of `bpf_probe_read_user()`. Can only be
 used in sleepable BPF progs.
@@ -91,13 +103,18 @@ List of BPF programs:
 $ bpftool prog
 ```
 
-List of BPF programs:
+List of BPF maps:
 ```
 $ bpftool map
 ```
 
 List of all BTF info, including functions:
 `bpftool btf dump file /sys/kernel/btf/vmlinux format raw`
+
+Can you hook to `FUNCTION_NAME`?
+```
+bpftool btf dump file /sys/kernel/btf/vmlinux | grep FUNCTION_NAME
+```
 
 ## Pinning BPF programs
 Normally, a BPF program requires the program that loaded it to be running, in order
@@ -162,6 +179,7 @@ Alternatively, can use pin the iterator to a bpffs file path:
 - Delete the file path to unload the iterator program.
 
 ## BPF tail call
+
 - Tail called programs must be of the same type of the caller.
   You have the option to declare the tail called BPF program to be of the same type,
   or leave a BPF program with a generic type, and use the helper functions
@@ -197,6 +215,7 @@ Limitations: you can only create a new inner map from UM.
 
 ## BPF Links
 A `bpf_link` is an abstraction used to:
+
 - represent an attachment of a BPF program to a BPF hook point;
 - encapsulate ownership of an attached BPF program to a process, or to a file path
   (via BPFFS). This allows to survive a user process exit.
@@ -227,3 +246,8 @@ Quoting some libbpf code in the kernel:
 ```
 
 Use `bpf_core_field_exists()` to select what of the struct to use to read data.
+
+## Nice helpers
+
+- `bpf_get_stackid`: save the user space or kernel space functions call stack
+  into a map.

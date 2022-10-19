@@ -1,6 +1,7 @@
 ## Signals
 Signal disposition: what the process does when it receives a specific signal. It can
 be one of:
+
 - TERM
 - IGN
 - CORE
@@ -8,6 +9,7 @@ be one of:
 - CONT
 
 A process can change that action using `sigaction()` or `signal()`. The change can be:
+
 - perform the default action
 - Ignore
 - Catch the signal with a signal handler function
@@ -19,6 +21,7 @@ The signal disposition is a **per-process** attribute. So the action will be the
 
 >
 > NOTE: Beware of the difference b/w signal masking & signal handing.
+>
 > - A signal can be blocked individually by each thread (sigprocmask())
 > - The way a signal is handled it is the same for all the threads in the group (sigaction()).
 >

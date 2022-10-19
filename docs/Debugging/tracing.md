@@ -3,23 +3,28 @@
 More info: https://jvns.ca/blog/2017/07/05/linux-tracing-systems/#kprobes
 
 Dynamic instrumentation (BPF, DTrace)
+
 - Zero overhead when not in use
 
 ## Tools
 
 ### bpftrace
-- New gen tracing tool inspired by DTrace, using BPF.
+
+- New gen tracing tool inspired by DTrace, using eBPF.
 
 ### DTrace
+
 - Dynamic tracing framework
 - Never made it to upstream Linux kernel
 - https://www.cs.princeton.edu/courses/archive/fall05/cos518/papers/dtrace.pdf
 
 ### ltrace
+
 - Trace library calls
 - Uses ptrace
 
 ### perf
+
 - Found in the kernel source tree at "/tools/perf" (package: "linux-tools")
 - Kernel profiling & sampling, statistics
 - Sample first, analyze later
@@ -40,29 +45,17 @@ sudo perf record -F max -ag -p PID
 sudo perf report --stdio
 ```
 
-### strace
-- Trace system calls
-- Uses ptrace
-Filtering by system call name:
-```
-strace -e trace=read,write,stat,openat
-```
-
-Useful options:
-- `e expr`: which event to trace, e.g. only specific syscalls.
-- `-f`: trace child processes as they are created
-- `-v`: print unabbreviated stuff
-- `-s 1024`: maximum string size to print
-
 ## Technology
 
 ## Probes (dynamic)
+
 - kprobe: dynamic instrumentation of kernel
   Dynamically change the kernel code at runtime to trace when a given instruction
   is called
 - uprobe: equivalent of kprobe in user space
 
 ### Tracepoint (static)
+
 - Kernel code can call hook functions, called probes.
 - Connect a probe to a tracepoint: the hook calls the probe.
 - See https://www.kernel.org/doc/Documentation/trace/tracepoints.rst
@@ -92,6 +85,7 @@ $ sudo perf --list tracepoint
 
 eBPF
 Extension to cBPF:
+
 - Call in-kernel helper functions
 - access shared data structures (eBPF maps)
 

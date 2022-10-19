@@ -32,6 +32,24 @@ https://www.youtube.com/watch?v=JRyrhsx-L5Y
 
 Frontends for ftrace / perf.
 
+### systemtap
+
+Dynamic kernel instrumentation, by building and loading a kernel module at runtime.
+Using kprobes, uprobes, USDT.
+
+Can get both userspace and kernel info.
+
+See:
+
+- https://wiki.debian.org/SystemTap
+- https://www.sourceware.org/systemtap/wiki/
+
+Hello world example:
+
+```console
+$ stap -v -e 'probe oneshot { println("hello world") }'
+```
+
 ### perf + hotspot
 
 Capture and show flamegraph, call stack.
@@ -46,3 +64,30 @@ $ hotspot perf.data
 - `stacksize`
 - `pstack`: dump the stack for all threads of a process
 - `valgrind --tool=drd --show-stack-usage=yes`
+
+### strace
+
+- Trace system calls
+- Uses ptrace
+Filtering by system call name:
+```
+strace -e trace=read,write,stat,openat
+```
+
+Useful options:
+
+- `e expr`: which event to trace, e.g. only specific syscalls.
+- `-f`: trace child processes as they are created
+- `-v`: print unabbreviated stuff
+- `-s 1024`: maximum string size to print
+
+### bpftrace
+
+Print kernel stack trace:
+
+```console
+$ sudo bpftrace -e 'kprobe:icmp_echo { print(kstack); }'
+
+# in another term
+$ ping localhost
+```
