@@ -4,8 +4,8 @@
 
 Portability:
 
-- ability to write a BPF program that works with different kernel version, where
-kernel data structures are different.
+- ability to write a BPF program that works with different kernel version,
+  where kernel data structures are different.
 
 Solutions:
 
@@ -28,31 +28,38 @@ b. CO-RE. Components:
 - kernel
 
 ## BTF
+
 Format to describe the type information of C programs. Compact size.
 Exposed via `/sys/kernel/btf/vmlinux`; and can be read via bpftool, getting all
 the kernel types, as if we had the kernel headers.
+
 ```
 $ bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h
 ```
+
 Your BPF program can just include a single `vmlinux.h` file.
 Missing `#define` macros though :-(, but they can be found in `bpf_helpers.h`
 
 ## Clang
-Clang support generating BPF programs with BTF relocation information, so that the
-BPF loader can adjust the program at runtime for the particular kernel it is running on.
--> Field offset relocation.
+
+Clang support generating BPF programs with BTF relocation information, so that
+the BPF loader can adjust the program at runtime for the particular kernel it
+is running on. -> Field offset relocation.
 
 ## BPF loader (libbpf)
+
 BPF program loader. It takes a BPF ELF object file, post-processes it, setups various
 kernel objects and triggers BPF program loading and verification.
 
 Resolved and matches all types and fields.
 
 ## Kernel
+
 No specific kernel support required, if BTF is exposed, the BPF program can be loaded
 as a traditional BPF one.
 
 ## Type of BPF Programs & Probes
+
 See `/sys/kernel/debug/tracing/events/...` and `/sys/kernel/debug/tracing/available_events`.
 
 - tracepoints / raw tracepoints (includes any syscall enter / exit).
@@ -85,10 +92,10 @@ Rootkit - oriented:
 
 - `bpf_override_return`:
 
- * Only for kernel functions defined with `ALLOW_ERROR_INJECTION(...)`
- * Needs a kernel with `CONFIG_BPF_KPROBE_OVERRIDE`
- * used at entry: syscall completely skipped!
- * used at exit: alters a syscall return value, but the syscall is executed.
+  * Only for kernel functions defined with `ALLOW_ERROR_INJECTION(...)`
+  * Needs a kernel with `CONFIG_BPF_KPROBE_OVERRIDE`
+  * used at entry: syscall completely skipped!
+  * used at exit: alters a syscall return value, but the syscall is executed.
 
 `bpf_probe_read_user() / bpf_probe_read_user_str() / bpf_probe_write_user()`:
 read / write an argument from a syscall, or read an VM addres of a user space
@@ -98,69 +105,72 @@ program. The address can be also passed via `skel->bss->ptr`.
 used in sleepable BPF progs.
 
 ## List BPF stuff
+
 List of BPF programs:
+
 ```
 $ bpftool prog
 ```
 
 List of BPF maps:
+
 ```
 $ bpftool map
 ```
 
-List of all BTF info, including functions:
-`bpftool btf dump file /sys/kernel/btf/vmlinux format raw`
+List of all BTF info, including functions: `bpftool btf dump file
+/sys/kernel/btf/vmlinux format raw`
 
 Can you hook to `FUNCTION_NAME`?
+
 ```
 bpftool btf dump file /sys/kernel/btf/vmlinux | grep FUNCTION_NAME
 ```
 
 ## Pinning BPF programs
-Normally, a BPF program requires the program that loaded it to be running, in order
-for the program to be kept loaded in the kernel.
-Alternatively, a BPF program can be pinned to a file under the special filesystem
-`bpffs`.
+
+Normally, a BPF program requires the program that loaded it to be running, in
+order for the program to be kept loaded in the kernel. Alternatively, a BPF
+program can be pinned to a file under the special filesystem `bpffs`.
 
 ## Interpreting verifier errors
-See the kernel file `kernel/bpf/verifier.c`:
 
-```
-/* string representation of 'enum bpf_reg_type' */
-static const char * const reg_type_str[] = {
-	[NOT_INIT]		= "?",
-	[SCALAR_VALUE]		= "inv",
-	[PTR_TO_CTX]		= "ctx",
-	[CONST_PTR_TO_MAP]	= "map_ptr",
-	[PTR_TO_MAP_VALUE]	= "map_value",
-	[PTR_TO_MAP_VALUE_OR_NULL] = "map_value_or_null",
-	[PTR_TO_STACK]		= "fp",
-	[PTR_TO_PACKET]		= "pkt",
-	[PTR_TO_PACKET_META]	= "pkt_meta",
-	[PTR_TO_PACKET_END]	= "pkt_end",
-	[PTR_TO_FLOW_KEYS]	= "flow_keys",
-	[PTR_TO_SOCKET]		= "sock",
-	[PTR_TO_SOCKET_OR_NULL] = "sock_or_null",
-	[PTR_TO_SOCK_COMMON]	= "sock_common",
-	[PTR_TO_SOCK_COMMON_OR_NULL] = "sock_common_or_null",
-	[PTR_TO_TCP_SOCK]	= "tcp_sock",
-	[PTR_TO_TCP_SOCK_OR_NULL] = "tcp_sock_or_null",
-	[PTR_TO_TP_BUFFER]	= "tp_buffer",
-	[PTR_TO_XDP_SOCK]	= "xdp_sock",
-	[PTR_TO_BTF_ID]		= "ptr_",
-	[PTR_TO_BTF_ID_OR_NULL]	= "ptr_or_null_",
-	[PTR_TO_PERCPU_BTF_ID]	= "percpu_ptr_",
-	[PTR_TO_MEM]		= "mem",
-	[PTR_TO_MEM_OR_NULL]	= "mem_or_null",
-	[PTR_TO_RDONLY_BUF]	= "rdonly_buf",
-	[PTR_TO_RDONLY_BUF_OR_NULL] = "rdonly_buf_or_null",
-	[PTR_TO_RDWR_BUF]	= "rdwr_buf",
-	[PTR_TO_RDWR_BUF_OR_NULL] = "rdwr_buf_or_null",
-};
+See the kernel file `kernel/bpf/verifier.c : reg_type_str[]`:
+
+```c
+[NOT_INIT] = "?",
+[SCALAR_VALUE] = "inv",
+[PTR_TO_CTX] = "ctx",
+[CONST_PTR_TO_MAP] = "map_ptr",
+[PTR_TO_MAP_VALUE] = "map_value",
+[PTR_TO_MAP_VALUE_OR_NULL] = "map_value_or_null",
+[PTR_TO_STACK] = "fp",
+[PTR_TO_PACKET] = "pkt",
+[PTR_TO_PACKET_META] = "pkt_meta",
+[PTR_TO_PACKET_END] = "pkt_end",
+[PTR_TO_FLOW_KEYS] = "flow_keys",
+[PTR_TO_SOCKET] = "sock",
+[PTR_TO_SOCKET_OR_NULL] = "sock_or_null",
+[PTR_TO_SOCK_COMMON] = "sock_common",
+[PTR_TO_SOCK_COMMON_OR_NULL] = "sock_common_or_null",
+[PTR_TO_TCP_SOCK] = "tcp_sock",
+[PTR_TO_TCP_SOCK_OR_NULL] = "tcp_sock_or_null",
+[PTR_TO_TP_BUFFER] = "tp_buffer",
+[PTR_TO_XDP_SOCK] = "xdp_sock",
+[PTR_TO_BTF_ID] = "ptr_",
+[PTR_TO_BTF_ID_OR_NULL] = "ptr_or_null_",
+[PTR_TO_PERCPU_BTF_ID] = "percpu_ptr_",
+[PTR_TO_MEM] = "mem",
+[PTR_TO_MEM_OR_NULL] = "mem_or_null",
+[PTR_TO_RDONLY_BUF] = "rdonly_buf",
+[PTR_TO_RDONLY_BUF_OR_NULL] = "rdonly_buf_or_null",
+[PTR_TO_RDWR_BUF] = "rdwr_buf",
+[PTR_TO_RDWR_BUF_OR_NULL] = "rdwr_buf_or_null",
 ```
 
 If loading bpf code results in this error, it means you are attempting to read
 a structure field that your kernel does not have:
+
 ```
 180: (85) call unknown#195896080
 invalid func unknown#195896080
@@ -175,6 +185,7 @@ invalid func unknown#195896080
 - Need to read seq fd to make the iterator run.
 
 Alternatively, can use pin the iterator to a bpffs file path:
+
 - Read from the path to run the iterator.
 - Delete the file path to unload the iterator program.
 
@@ -195,6 +206,7 @@ Alternatively, can use pin the iterator to a bpffs file path:
   it cannot be any pointer to a argument the user wants to pass around.
 
 ## JIT
+
 JIT compilers speed up execution of the BPF program significantly since they
 reduce the per instruction cost compared to the interpreter.
 Often instructions can be mapped 1:1 with native instructions of the
@@ -206,14 +218,17 @@ underlying architecture.
 ## Maps
 
 ### Memory mapped
+
 You can memory maps a BPF map of type array. Declare the map with `BPF_F_MAPPABLE`.
 A limitation is that the map __cannot be read only from UM__, i.e. declared
 with `BPF_F_RDONLY`.
 
 ### Map of maps
+
 Limitations: you can only create a new inner map from UM.
 
 ## BPF Links
+
 A `bpf_link` is an abstraction used to:
 
 - represent an attachment of a BPF program to a BPF hook point;
@@ -222,6 +237,7 @@ A `bpf_link` is an abstraction used to:
 See: https://lore.kernel.org/bpf/20200228223948.360936-1-andriin@fb.com/
 
 ## BPF spin locks
+
 Used to mutex access/updates to a single map element.
 
 ## CORE
