@@ -1,7 +1,9 @@
 # Rootless Containers
 
 ## pivot_root
+
 From pivot_root(2):
+
     pivot_root() changes the root directory and the current working
     directory of each process or thread in the same mount namespace to
     new_root if they point to the old root directory.  (See also NOTES.)
@@ -10,7 +12,8 @@ From pivot_root(2):
     it should be followed by a chdir("/") call.
 
 As found in "Rootless Containers with runC" -- Aleksa Sarai
-```
+
+```console
 $ unshare -UrmunipCf bash
 
 # These 2 are needed for pivot_root to work:
