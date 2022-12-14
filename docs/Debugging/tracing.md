@@ -45,6 +45,10 @@ sudo perf record -F max -ag -p PID
 sudo perf report --stdio
 ```
 
+### pprof
+
+TBD. Frontend for perf and other profiling data files.
+
 ## Technology
 
 ## Probes (dynamic)

@@ -236,7 +236,7 @@ A `bpf_link` is an abstraction used to:
   (via BPFFS). This allows to survive a user process exit.
 See: https://lore.kernel.org/bpf/20200228223948.360936-1-andriin@fb.com/
 
-## BPF spin locks
+## BPF spinlocks
 
 Used to mutex access/updates to a single map element.
 

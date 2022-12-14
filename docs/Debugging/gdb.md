@@ -202,6 +202,7 @@ info shared[library]
 ```
 
 Match addresses of a shared libraries .so with the runtime addresses:
+
 - `readelf -a lib.so` / `objdump -d lib.so` will provide relative addresses inside the library.
 - The start address shown by GDB `info shared` is for the `.text` section inside the .so
 - So, if GDB is showing address `0x00007ffffaaaabbb` for an instruction address,
@@ -285,6 +286,7 @@ the other is held suspended.
 ## Kill process, but make it look like an accident
 
 x86_64 version:
+
 ```console
 $ gdb -p PID -batch -ex 'set {short}$rip = 0x050f' -ex 'set $rax=231' -ex 'set $rdi=0' -ex 'cont'
 ```
@@ -297,6 +299,7 @@ Explanation:
 - `set $rdi=0`: set RDI register to 0 (i.e. 0 as syscall argument)
 
 aarch64 version:
+
 ```console
 $ gdb -p "$1" -batch -ex 'set {int}$pc = 0xd4000001' -ex 'set $w8=94' -ex 'set $x0=0' -ex 'cont'
 ```

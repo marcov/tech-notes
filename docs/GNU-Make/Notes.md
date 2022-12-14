@@ -114,3 +114,11 @@ $ VAREQ="neweq" VARCOLON="newcolon" VARQUEST="newquest" make -e
 := 'newcolon'
 ?= 'newquest'
 ```
+
+## Keep going
+
+Continue as much as possible after an error.
+
+```console
+$ make --keep-going THE-TARGET
+```

@@ -1,5 +1,10 @@
 # Processes
 
+## procfs Interface
+
+TIL: `/proc/PID`: the owner user group IDs shown when calling `stat` on this
+directory corresponds to the credentials ot `PID`.
+
 ## Process IDs
 
 (Get IDs from: `/proc/PID/status`)

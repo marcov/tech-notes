@@ -2,15 +2,27 @@
 
 ## Docker
 ### Get info using format string
+
 List runtimes:
+
 ```
 docker info --format "{{.Runtimes}}"
 ```
 
 Get the path of a runtime:
+
 ```
  docker info --format "{{(index .Runtimes \"kata-runtime\").Path}}"
 ```
+
+#### About `--format`
+
+It follows the same Go json struct marshalling rules:
+
+- fields name are capitalized
+- use "{{json .}}" to figure out what to print
+- More info at: https://docs.docker.com/config/formatting/
+- If a field contains a ".", you need to use "index. E.g.: `{{ index .OuterField "field.withdot" "InnerField" }}`
 
 ### Set the cgroup driver
 
@@ -41,4 +53,5 @@ Events (from moby)
 $ sudo ctr namespaces ls
 $ sudo ctr --namespace moby events
 ```
+
 

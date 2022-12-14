@@ -118,8 +118,8 @@ char* foo = {'c', 'i', 'a', 'o'};
 
 ### Compound literals
 
-Constructs an unnamed object of specified type (which may be struct, union, or
-even array type) in-place: `( type ) { initializer-list }`
+Constructs an unnamed (temporary) object of specified type (which may be
+struct, union, or even array type) in-place: `( type ) { initializer-list }`
 
 ```c
 struct my_struct
@@ -139,6 +139,15 @@ int main(void)
     fx((struct my_struct){1, 2, {1, 2, 3}});
     return 0;
 }
+```
+
+Inline temporary array:
+
+```c
+static void print_array(const int* ptr);
+
+print_array((const int []){1, 2, 3, 4});
+print_array((const int [10]){1, 2,});
 ```
 
 ### Enumerations (C++)

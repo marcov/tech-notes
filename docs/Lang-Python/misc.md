@@ -16,3 +16,8 @@ Handy `which` implementations:
 - `shutil.which()`
 - `plumbum.local.which()`
 
+## Pass additional pytest options
+
+- Via the `PYTEST_ADDOPTS` env var.
+
+- the `addopts` field in `pytest.ini`.

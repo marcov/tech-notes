@@ -29,14 +29,17 @@ filename -> inode identifier -> inode reference
 ```
 
 ### inode
+
 - Unique identifier for a file object.
 - File metadata
 
 ### dentry
+
 Translates between file name and inode. There is a cache for both dentries and
 inodes.
 
 ## select() vs. poll()
+
 TL;DR: Use `poll()` instead of `select()`
 Reasons:
  - select() has poor performances (for-loop from FD 0 to target FD).
