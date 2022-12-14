@@ -61,6 +61,26 @@ has the effect of killing all the pids in that PID NS using
 is the parent that is exiting, and the parent has not other threads active that
 could reap.
 
+## Child subrepaer
+
+A process can specify itself as the "child subreaper" for all its
+descendants, ie. the process that will reap all descendants.
+It does so by calling:
+
+```c
+prctl(PR_SET_CHILD_SUBREAPER, 1);
+```
+
+A subreaper fulfills the role of init for its descendant processes.
+When a descendant becomes orphaned, it will be reaped by this process instead
+of by init.
+
+The setting persist after calling exec(), ie. the executed process will be
+the subreaper.
+
+The setting is cleared after calling fork(), ie. the forked child will not be
+a subreaper.
+
 ## Create a session leader
 
 Use the `setsid()` syscall.
