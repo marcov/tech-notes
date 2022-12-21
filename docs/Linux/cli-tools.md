@@ -193,16 +193,20 @@ $ ssh -L 5901:127.0.0.1:5901 -N -f -p SSH-PORT -l pi example.com
 $ xtigervncviewer
 ```
 
-### Do not store host keys fingerprints to `~/.ssh/known_hosts`
+### Do not store key fingerprints of each host in `~/.ssh/known_hosts`
 
 ```
 Host 10.* 192.168.* 172.*
     UserKnownHostsFile /dev/null
     StrictHostKeyChecking no
+    LogLevel ERROR
 ```
 
 NOTE: `Host` can be a single host, or a white space separated list. Use `*` to
 define patterns.
+
+The line `LogLevel ERROR` suppresses the `Warning: Permanently added ...`
+warning message printed at every connection.
 
 ## mtr - my tracerouter
 `mtr` combines the functionality of the traceroute and ping programs in a single
