@@ -73,9 +73,18 @@ See `/sys/kernel/debug/tracing/events/...` and `/sys/kernel/debug/tracing/availa
 - `bpf_iter`: iterator over various stuff, e.g. list of all current task structures.
 - `syscall`: a program that can call sycalls.
 
-If you hook on exit path (`fexit` & `kretprobe`) you may not be able to retrieve
-the function arguments. The registers holding the arguments at the function entry
-could be clobbered by the function execution.
+>
+> From `libbpf-bootstrap`:
+>
+> The big distinction between fexit and kretprobe programs is that fexit one
+> has access to both input arguments and returned result, while kretprobe can
+> only access the result.
+>
+
+If you hook on exit path using `kretprobe`, you may not be able to retrieve the
+function arguments. The registers holding the arguments at the function entry
+could be clobbered by the function execution. However this _should_ not happen
+with `fexit`, according to `BPF_PROG` documentation in `bpf_tracing.h`
 
 ## Useful helper functions
 
@@ -101,8 +110,8 @@ Rootkit - oriented:
 read / write an argument from a syscall, or read an VM addres of a user space
 program. The address can be also passed via `skel->bss->ptr`.
 
-`bpf_copy_from_user()`: sleepable version of `bpf_probe_read_user()`. Can only be
-used in sleepable BPF progs.
+`bpf_copy_from_user()`: sleepable version of `bpf_probe_read_user()`. Can only
+be used in sleepable BPF progs.
 
 ## List BPF stuff
 
