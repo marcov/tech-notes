@@ -1,12 +1,27 @@
 # GDB
 
-## Variables
+## Run command with a set of arguments
 
-### Locals and args
+```
+r [arguments you'd pass to the app under test]
+```
+
+Or, **much more quickly**:
+
+```console
+$ gdb --args APP-NAME [APP-ARGUMENTS]
+
+r
+```
+
+## Locals and arguments
+
 ```
 info locals
 info args
 ```
+
+## Variables
 
 ### Symbol
 Information about symbol for program counter
