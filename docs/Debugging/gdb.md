@@ -6,7 +6,9 @@
 r [arguments you'd pass to the app under test]
 ```
 
-Or, **much more quickly**:
+Or, (**super useful trick**):
+
+Just prefix you command line with `gdb --args`, and you  are good to go.
 
 ```console
 $ gdb --args APP-NAME [APP-ARGUMENTS]
@@ -25,16 +27,19 @@ info args
 
 ### Symbol
 Information about symbol for program counter
+
 ```
 info symbol $pc
 ```
 
 ### Info on a global variable name
+
 ```
 info variable <regex without quotes>
 ```
 
 ### Get the type
+
 ```
 whatis var_name
 ```
@@ -42,6 +47,7 @@ whatis var_name
 ## Breakpoints and Watchpoints
 
 - Search for a function to break
+
 ```
 # info functions <regex without quotes>
 # E.g.:
@@ -49,6 +55,7 @@ info function ^get.*Async$
 ```
 
 - Setting:
+
 ```
 break fx | filename:linenumber
 tbreak
@@ -56,31 +63,38 @@ watch variable_name | *0xADD1355
 ```
 
 - Listing:
+
 ```
 info breakpoints
 info watchpoints
 ```
 
 - Disabling (get the bkpt # with `info b`):
+
 ```
 disable [bkpt #]
 ```
 
 - Deleting (get the bkpt # with `info b`):
+
 ```
 del[ete] [bkpt #]
 ```
 
 - Delete all:
+
 ```
 d[elete breakpoints]
 ```
 
 - Conditional breakpoints:
+
 ```
 b foobar.c:123 if  pVal == nullptr
 ```
+
 or
+
 ```
 b foobar.c:123
 cond [brkpt # ] if  pVal == nullptr
@@ -91,11 +105,14 @@ cond [brkpt # ] if  pVal == nullptr
 ### Backtrace
 
 ### Single thread
+
 ```
 bt [thread #]
 where
 ```
+
 Full backtrace (code listing):
+
 ```
 bt full
 ```
@@ -277,6 +294,16 @@ step   == scheduler locked during stepping commands (step, next, stepi, nexti).
 replay == scheduler locked in replay mode and unlocked during normal execution.
 ```
 
+## Limit debug to a single thread
+
+```
+> break FooBar
+...
+# breakpoint met
+
+> set scheduler-locking step
+> # this will ignore breaks by other threads
+```
 ## Following child on fork
 
 If you want to follow the child process instead of the parent process, use the

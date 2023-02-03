@@ -15,6 +15,20 @@ int* ptr = array;
 
 ### Designated initializers for arrays and structures.
 
+>
+> Vocabulary:
+>
+> - Aggregate initialization: initialize an aggregate from an initializer list.
+>
+> - Aggregate: is an array or struct / union
+>
+> - Initializer list: a list of elements used to initialize an aggregate, e.g. `{1, 2, 3}`
+>
+> - Designated initializer list:
+>   - for structs, it is an initializer list in the  form `{ .field_foo = 1, .field_bar = 2 }`
+>   - for arrays, it is an initializer list in the  form `{ [0] = 1, [1] = 2 }`
+>
+
 > **Note**:
 > - designated initializers is a form of aggregate initialization,
 >   i.e. initializers of an aggregate type using `{ }`
@@ -34,6 +48,9 @@ Info: https://en.cppreference.com/w/cpp/language/aggregate_initialization#Design
 
 ### Zero Initialization
 
+In an initializer list, all members that are not initialized explicitly are
+empty-initialized (i.e., set to zero / NULL).
+
 **Empty initializer** list `{}` it's used for zero initialization of arrays.
 It is valid in C++ but not in C until C23:
 
@@ -44,8 +61,9 @@ int a[3] = {0}; // valid C and C++ way to zero-out a block-scope array
 
 **NOTE** for C++ about structures and classes:
 
-You cannot use `struct = {0}` to zero initialize all fields in a structure.
-The effect is same as "aggregate-initialization". All these are equivalent:
+You can use `struct StructType myStruct = {0}` to zero initialize all fields
+in a structure. The effect is same as "aggregate-initialization". All these are
+equivalent:
 
 ```cpp
 struct MyStruct foo = {};
