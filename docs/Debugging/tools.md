@@ -1,37 +1,17 @@
-## Debugging tools
+# Debugging & Tracing Tools
 
-### addr2line
-
-From the man page:
-
-    addr2line translates addresses into file names and line numbers.  Given an
-    address in an executable or an offset in a section of a relocatable object,
-    it uses the debugging information to figure out which file name and line
-    number are associated with it.
-
-    The executable or relocatable object to use is specified with the -e
-    option.
-
-E.g., if you only know the that an application `app-name` crashed at
-`0x1234abcd` (by inspecting from crash dump/log), you can retrieve the
-source code line with:
-
-```console
-$ addr2line -e app-name 1234abcd
-/home/foo/app-src/main.c:567
-```
-### rr
+## rr
 
 - Record failures, lets you replay them.
 - Chaos mode to make intermittent bugs more reproducible.
 
-### trace-cmd (ftrace)
+## trace-cmd (ftrace)
 
-Trace functions call in the kernel.
+Trace functions call in the kernel. E.g.:
 
-E.g.:
-
-NOTE: if there's a fentry/fexit on the function call, it will not be shown!
+>
+> NOTE: if there's a fentry/fexit on the function call, it will/may not be shown?
+>
 
 Run a command and capture all its kernel functions calls:
 
@@ -50,11 +30,11 @@ Capture a specific kernel function (and all functions it calls), for any process
 
 https://www.youtube.com/watch?v=JRyrhsx-L5Y
 
-### traceshark, kernelshark
+## traceshark, kernelshark
 
 Frontends for ftrace / perf.
 
-### systemtap
+## systemtap
 
 Dynamic kernel instrumentation, by building and loading a kernel module at runtime.
 Using kprobes, uprobes, USDT.
@@ -72,7 +52,7 @@ Hello world example:
 $ stap -v -e 'probe oneshot { println("hello world") }'
 ```
 
-### perf + hotspot
+## perf + hotspot
 
 Capture and show flamegraph, call stack.
 
@@ -81,13 +61,7 @@ $ sudo perf record --call-graph dwarf EXECUTABLE
 $ hotspot perf.data
 ```
 
-### Debugging stack
-
-- `stacksize`
-- `pstack`: dump the stack for all threads of a process
-- `valgrind --tool=drd --show-stack-usage=yes`
-
-### strace
+## strace
 
 - Trace system calls
 - Uses ptrace
@@ -109,7 +83,9 @@ Useful options:
 
 **NOTE**: Apparently, you cannot run setuid binaries with strace.
 
-### bpftrace
+## bpftrace
+
+New gen tracing tool inspired by DTrace, using eBPF.
 
 Print kernel stack trace:
 
@@ -119,3 +95,38 @@ $ sudo bpftrace -e 'kprobe:icmp_echo { print(kstack); }'
 # in another term
 $ ping localhost
 ```
+
+## bcc
+
+Wrapper for `bpf()` syscall (BPF_PROG_LOAD).
+
+## ltrace
+
+- Trace library calls
+- Uses ptrace
+
+## perf
+
+- Found in the kernel source tree at "/tools/perf" (package: "linux-tools")
+- Kernel profiling & sampling, statistics
+- Sample first, analyze later
+- Can instrument tracepoints, kprobes, uprobes, USDT probes.
+
+E.g.: `sched_process_exec` is a tracepoint.  Print # of exec'ed process every 1s:
+```
+$ perf stat -e sched:sched_process_exec -I 1000
+```
+
+- List sched tracepoints with `sudo perf list "sched:*"`
+- List all tracepoints with `sudo perf list | grep -i tracepoint`
+
+Get call-graph and other stuff for a PID (can be paired with flame graph generator):
+```
+sudo perf record -F max -ag -p PID
+#... let processes run for a while, then ctrl-c
+sudo perf report --stdio
+```
+
+## pprof
+
+TBD. Frontend for perf and other profiling data files.

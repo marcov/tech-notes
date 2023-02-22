@@ -48,8 +48,10 @@ Avoid generating nohup.log:
 $ nohup <command> <command options> >dev/null &
 ```
 
-## SED
+## sed
+
 ### Delete lines
+
 With a given pattern (`/pattern/d`):
 ```
 $ sed "/pattern/d" file.txt
@@ -60,13 +62,25 @@ In a given range (`i,jd`):
 $ sed "2,14d" file.txt
 ```
 
+Delete empty lines:
+
+```
+$ sed -e '/^$/d'
+```
 ### Print only a given pattern found in a given line
+
 Make sed print only relevant pattern.
 E.g. only print the "..." part in the lines having the format "... bar". Do not
 print lines not having this pattern.
 
 ```
 sed -n 's/ \+bar//p'
+```
+
+### Join lines
+
+```
+sed -z 's/\n//g'
 ```
 
 ## ss: socket statistics
