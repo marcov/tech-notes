@@ -239,13 +239,13 @@ Handy to be used with rebase:
 $ git rebase -i $(git merge-base HEAD origin/master)
 ```
 
-## Clean everything
+## **Really** clean everything
 
 >
 > **NOTE**: USE WITH CARE!
 >
 ```
-$ git clean -fdx
+$ git clean -dffx
 ```
 
 ## Checkout a branch with an arbitrary name
