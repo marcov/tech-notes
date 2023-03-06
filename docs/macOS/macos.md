@@ -1,4 +1,5 @@
 # macOS
+
 ##Shortcuts
 - `Command - m`: minimize a window
 - `Command - Tab` + (select application) + `(release tab)` + `Option` + `(release Command)`:
@@ -44,3 +45,9 @@ Max out keyboard repeat rate:
 defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
 defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
 ```
+
+## File System Activity
+
+`fs_usage` – report system calls and page faults related to filesystem activity
+in real-time.
+

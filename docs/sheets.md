@@ -16,6 +16,14 @@ As a single column:
 transpose({1, 2, 3, 4})
 ```
 
+You can also turn a named range into an array:
+
+This makes sheet expand the named range content into some other cells.
+
+```
+= {namedRange}
+```
+
 ### Subarray
 
 Subarray starting from an arbitrary offset. NOTE: Offset `-th` starts from 0!
@@ -61,3 +69,12 @@ E.g., this returns 30 (when using named ranges for arrays this starts to make mo
 =index({10, 20, 30, 40},,match("c", {"a", "b", "c", "d"}, 0))
 ```
 
+## arrayformula
+
+`arrayformula` allows to use arrays and named ranges in formulas.
+
+E.g. you can do a multiplication with:
+
+```
+= arrayformula(namedRange * A1:A10)
+```
