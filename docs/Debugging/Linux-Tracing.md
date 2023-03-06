@@ -9,12 +9,18 @@ More info: https://jvns.ca/blog/2017/07/05/linux-tracing-systems/#kprobes
 
 ## Kprobes / uprobes (dynamic)
 
-- kprobe: dynamic instrumentation of kernel: zero overhead when not in use.
+- kprobe/kretprobe: dynamic instrumentation of kernel: zero overhead when not
+  in use.
   Can hook entry and exit of any kernel function
   Dynamically change the kernel code at runtime to trace when a given
   kernel function is called.
   It may not page fault or sleep.
-  It runs with interrupts disabled.
+  It runs in interrupt context with interrupts disabled.
+
+  For a given kretprobe, you can only execute up to `maxactive` parallel calls.
+  `maxactive` default should be # of CPUs.
+
+ Active kprobes show up in `/sys/kernel/debug/kprobes/list`
 
 - uprobe: equivalent of kprobe in user space
 
