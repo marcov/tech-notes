@@ -16,12 +16,18 @@ As a single column:
 transpose({1, 2, 3, 4})
 ```
 
-You can also turn a named range into an array:
-
-This makes sheet expand the named range content into some other cells.
+## Named Ranges
+Turn a named range into an array. This makes Sheets expand the full set of
+values in a named range into some other cells:
 
 ```
 = {namedRange}
+```
+
+You can move from named range column to row using:
+
+```
+= transpose(namedRange)
 ```
 
 ### Subarray
