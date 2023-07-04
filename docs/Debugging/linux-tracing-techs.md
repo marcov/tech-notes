@@ -22,6 +22,14 @@ More info: https://jvns.ca/blog/2017/07/05/linux-tracing-systems/#kprobes
 
  Active kprobes show up in `/sys/kernel/debug/kprobes/list`
 
+ Legacy interface:
+
+ - kprobes show up in `/sys/kernel/tracing/kprobe_events`.
+ - Number of hit and miss shown in `/sys/kernel/tracing/kprobe_profile`:
+ ```
+ event-name hit-count miss-count
+ ```
+
 - uprobe: equivalent of kprobe in user space
 
 ## Tracepoint (static)
