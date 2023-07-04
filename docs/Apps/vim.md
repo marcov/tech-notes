@@ -51,7 +51,9 @@ the other lines).
 
 `:ta TAG-NAME` (aka `tag`): jump to a tag, same as `CTRL-]`.
 
-When having many instances of the same tag (e.g. function declaration and definition):
+When there are many instances of the same tag and you need to pick one (e.g.
+function declaration and definition):
+
 - `:ts TAG-NAME` (aka `tselect`)
 - `:tj TAG-NAME` (aka `tjump`)
 - `g] TAG-NAME`
