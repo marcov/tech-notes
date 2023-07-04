@@ -13,10 +13,15 @@
 
  - TGID: the Thread Group ID.
 
-   * Thread Group = a group of KSEs (Kernel Scheduling Entities) that share the same TGID.
+   * Thread Group = a group of KSEs (Kernel Scheduling Entities) that share the
+     same TGID.
    * Each thread in a thread group has a distint TID.
-   * Thread Group Leader = the first thread in a new thread group, where TID == TGID
+   * Thread Group Leader = the first thread in a new thread group, where TID ==
+     TGID
    * TGID == PID
+   * A TGID can exit independently from the other TIDs by calling `pthread_exit()`.
+     In that case, the TGID becomes a zombie but it is not reapable until
+     all the other threads in the group exit.
 
  - All the TIDs for a TGID show up under `/proc/TGID/task/{TID1,TID2, ...}`
    Contrary to PIDs, the  `/proc/[tid]` subdirectories are not visible when
