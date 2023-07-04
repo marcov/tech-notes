@@ -1,4 +1,4 @@
-# eBPF
+# BPF (eBPF)
 
 ## Main Goals
 
@@ -288,6 +288,29 @@ using `__builtin_preserve_access_index`, or by tagging a kernel struct
 definition with `__attribute__((preserve_access_index))` - these twos are
 equivalent.
 
-## Programs stats
+## Programs statistics
 
 Write `1` to `/proc/sys/kernel/bpf_stats_enabled`.
+
+That will make bpftool show additional info:
+
+- run_cnt: the number of times the program was executed.
+- run_time_ns: the **cumulative** program execution time in nanoseconds
+  including the off-cpu time when the program was sleeping.
+
+```
+sudo bpftool prog show
+
+--- CUT ---
+3001: raw_tracepoint  name my_tracepoint  tag abcdef0123456789  gpl run_time_ns 41752 run_cnt 24
+
+--- CUT ---
+```
+
+Stats in newer kernel:
+
+- verified_insns: the number of verifier processed instructions - what's
+  currently dumped in the libbpf log on program load, when the log level is
+  verbose enough.
+
+- recursion_misses: how many times recursion was prevented (TBD).
