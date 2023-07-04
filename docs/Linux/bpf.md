@@ -178,7 +178,8 @@ See the kernel file `kernel/bpf/verifier.c : reg_type_str[]`:
 ```
 
 If loading bpf code results in this error, it means you are attempting to read
-a structure field that your kernel does not have:
+a (relocatable) structure field that your kernel does not have (or better said,
+cannot relocate):
 
 ```
 180: (85) call unknown#195896080
@@ -276,3 +277,17 @@ Use `bpf_core_field_exists()` to select what of the struct to use to read data.
 
 - `bpf_get_stackid`: save the user space or kernel space functions call stack
   into a map.
+
+## Direct memory read
+
+Some program types (tracing and trampolines) allows direct memory reads of
+kernel pointers, without having to use `bpf_probe_*` helpers.
+
+However, you still need to have the compiler emit CO-RE relocations, either
+using `__builtin_preserve_access_index`, or by tagging a kernel struct
+definition with `__attribute__((preserve_access_index))` - these twos are
+equivalent.
+
+## Programs stats
+
+Write `1` to `/proc/sys/kernel/bpf_stats_enabled`.
