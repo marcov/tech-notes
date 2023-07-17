@@ -2,16 +2,20 @@
 
 ## Generate a compilation database for YCM / ccls, ...
 
-Just use `bear`
+clang has built-in support for generating the `compile_commands.json`
+Simply compile each file using the flag `-MJ file.o.json`. E.g., when compiling
+using a Makefile, add to the CFLAGS `-MJ $@.json`
 
-### Legacy
+To coalesce all json file in a compile_commands.json file use:
 
-Call `make ...` with `compiledb make ...`
-
-Install `compiledb`:
+```console
+sed -e '1s/^/[\n/' -e '$s/,$/\n]/' output/**/*.o.json > compile_commands.json
 ```
-$ pip install compiledb
-```
+
+Legacy:
+
+- `bear`
+- `compiledb make ...`
 
 ## vimdiff
 
