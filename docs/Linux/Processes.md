@@ -12,11 +12,20 @@ directory corresponds to the credentials ot `PID`.
 - PID: the process ID.
 - PPID: the parent Process ID that created the process (PPID of PID1 is 0).
 - PGID: the process' Group ID.
+
   * Process Group = a collection of related processes.
-  * Process Group Leader = the process that created the group (its own PID becomes
-    the PGID).
+  * Process Group Leader = the first member of a process group (its PID is the
+    PGID).
   * A PID may join another Process Group
+  * The process group leader need not be the last member of a process group.
+  * The shell starts each executable in a new process group. When the executable
+    runs, its PID == PGID.
+  * When running a pipeline of executables,the shell create a new process group
+    and places all executables in the pipeline in that group. The leader is the
+    first member of the pipeline.
+
 - SID: the process' Session ID.
+
   * Session = collection of related Process Groups.
   * Session Leader = the process that created the session (its own PID becomes
     the SID).
@@ -26,6 +35,8 @@ directory corresponds to the credentials ot `PID`.
 
 *Process Groups* and *Sessions* are abstraction to support shell job control,
 e.g. allow interactive users to run command in fg / bg.
+
+
 
 ## Symbolic process stack
 
