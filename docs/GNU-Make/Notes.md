@@ -80,35 +80,35 @@ all:
         @echo ?= \'$(VARQUEST)\'
 ```
 
-```
+```console
 $ make
 = 'equal'
 := 'colon'
 ?= 'question'
 ```
 
-```
+```console
 $ make VAREQ="neweq" VARCOLON="newcolon" VARQUEST="newquest"
 = 'neweq'
 := 'newcolon'
 ?= 'newquest'
 ```
 
-```
+```console
 $ VAREQ="neweq" VARCOLON="newcolon" VARQUEST="newquest" make
 = 'equal'
 := 'colon'
 ?= 'newquest'
 ```
 
-```
+```console
 $ VAREQ="neweq" VARCOLON="newcolon" VARQUEST="newquest" make VAREQ="neweq2" VARCOLON="newcolon2" VARQUEST="newquest2"
 = 'neweq2'
 := 'newcolon2'
 ?= 'newquest2'
 ```
 
-```
+```console
 $ VAREQ="neweq" VARCOLON="newcolon" VARQUEST="newquest" make -e
 = 'neweq'
 := 'newcolon'
@@ -121,4 +121,35 @@ Continue as much as possible after an error.
 
 ```console
 $ make --keep-going THE-TARGET
+```
+
+## Target and recipes using foreach
+
+Using the following method, each command is a dedicate recipe line. If a
+command fail, make will fail.
+
+Instead, if you use bash `for ... in; do`, then a command failure does not
+stop executing the next ones. And if the last command succeeds, then make exits
+with 0.
+
+Note: The empty line before `endef` is needed to expand each `recipe_line` into
+a full recipe line.
+
+```makefile
+define recipe_line
+	$(recipe_line_command) $(1) [other options ...]
+
+endef
+
+.PHONY: all
+all:
+	$(foreach arg,$(ALL_ARGUMENTS),$(call recipe_line,$(arg)))
+```
+
+```console
+$ make ALL_ARGUMENTS="ciao belli" recipe_line_command="/usr/bin/echo"
+/usr/bin/echo ciao [other options ...]
+ciao [other options ...]
+/usr/bin/echo belli [other options ...]
+belli [other options ...]
 ```
