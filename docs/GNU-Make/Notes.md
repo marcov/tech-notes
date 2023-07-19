@@ -153,3 +153,32 @@ ciao [other options ...]
 /usr/bin/echo belli [other options ...]
 belli [other options ...]
 ```
+
+## Spaces using in conditionals
+
+Quoting: http://savannah.gnu.org/bugs/?59584
+
+> For conditionals, preceding whitespace is preserved in the left-hand side of
+> the match, while trailing space is ignored.  Bizarrely, for the right-hand
+> side of the match leading whitespace is ignored while trailing whitespace is
+> preserved.
+
+> I always recommend to everyone that they remove all leading/trailing
+> whitespace in all conditionals, as a simple to remember and always-correct
+> rule.
+
+Both evaluate to false:
+
+```make
+ifeq ( $(foo), $(foo))
+
+# ...
+
+ifeq ( $(foo),$(foo) )
+```
+
+Evaluate to true:
+
+```make
+ifeq ($(foo) , $(foo))
+```
