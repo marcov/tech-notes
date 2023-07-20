@@ -345,8 +345,30 @@ You can use the `git-jump` extension to jump to interesting stuff in an editor:
 - grep
 
 ## Fancy diff
+
 Use `--color-words` option to show changed words in a line in red / green color,
 instead of seeing the same line before / after the change.
 
 ## Short status
-`git status -s`
+
+```
+git status -s
+```
+
+## Shortened Git log hash
+
+```
+git log --abbrev-commit
+```
+
+## Diff between ranges of commits
+
+Let's say you have rebased your branch with N commits, and you want to prove
+your changes done for rebase are correct. You can use `range-diff` to do that.
+
+```
+git [--word-diff] [--color-words] range-diff BEFORE_REBASE_HEAD~N..BEFORE_REBASE_HEAD HEAD~N..HEAD
+```
+
+Use either the `--word-diff` or `--color-words` option to make the diff easier
+to read.
