@@ -314,3 +314,21 @@ Stats in newer kernel:
   verbose enough.
 
 - recursion_misses: how many times recursion was prevented (TBD).
+
+## BPF programs, preemption, CPU migration
+
+See [Are BPF programs preemptible?](https://lore.kernel.org/bpf/CAMy7=ZWPc279vnKK6L1fssp5h7cb6cqS9_EuMNbfVBg_ixmTrQ@mail.gmail.com/T/)
+
+- We are only guaranteed that the BPF program will run from start to finish on
+  the same CPU (disable_migration()).
+- There is no guarantee that at BPF program is not preempted.
+- That said, on non-RT systems, a BPF program can only be interrupted by IRQ,
+  NMI, an other higher priority stuff.
+- On a RT system, a BPF program can be interrupted (scheduled out) by another
+  program of the same priority / same kind. NOTE: it cannot be interrupted by
+  a different execution of the same program. Not clear why.
+- The implications is that you cannot share a per-CPU array map among different
+  programs, since one program can clobber data from another program.
+- You need one map per program, or you need a dedicate entry in the map for each
+ program type (again, not clear why the same program cannot interrupt itself
+ ... ).
