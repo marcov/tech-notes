@@ -123,9 +123,22 @@ thread apply all bt
 ```
 
 ### Stack frame
+
 Go to a function in the backtrace (to get info about parameters,...)
+
 ```
 frame [frame position #]
+```
+
+Move in the stack frame up (to the caller) or down (to the called) n times --
+move of 1 when n is omitted:
+
+```
+up [n]
+```
+
+```
+down [n]
 ```
 
 Resume execution from there:
