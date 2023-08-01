@@ -49,25 +49,23 @@ Atomics are a way to control compiler optimization and reordering.
 
 - Compiler can only see memory access by a single thread.
 
-- How to think about atomic:
+- How to think about atomic: acquire and release are one way barrier.
 
+```c
+A;              // A can move after atomic_read();
+
+// move down: OK
+atomic_read();  // <=> lock.acquire() (acquire exclusion)
+// move up:   BLOCKED
+
+B;             // B cannot move before atomic_read() or after atomic_write()
+
+// move down: BLOCKED
+atomic_write() <=> lock.release() (release exclusion)
+// move up:   OK
+
+C;              // C can move before atomic_write();
 ```
-A
-
-vvv: OK - ^^^: blocked
-
-atomic_read  <=> lock.acquire() (acquire exclusion)
-
-B
-
-atomor_write <=> lock.release() (release exclusion)
-
-^^^: OK  - vvv: blocked
-
-C
-```
-
-Acquire and release are one way barrier.
 
 The compiler:
 
@@ -77,8 +75,19 @@ The compiler:
 - cannot move A after the region: it cannot move down across a release.
 
 In addition, for sequential consistent model, you cannot reorder
-require/release, e.g. you cannot move an acquire (read) before a release
-(store).
+acquire with release, e.g., this:
+
+```c
+atomic_write();
+atomic_read();
+```
+
+cannot be reordered into:
+
+```c
+atomic_read();
+atomic_write();
+```
 
 ---
 
