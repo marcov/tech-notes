@@ -332,3 +332,7 @@ See [Are BPF programs preemptible?](https://lore.kernel.org/bpf/CAMy7=ZWPc279vnK
 - You need one map per program, or you need a dedicate entry in the map for each
  program type (again, not clear why the same program cannot interrupt itself
  ... ).
+
+## BPF programs and RCU
+
+BPF programs run with RCU read lock held.
