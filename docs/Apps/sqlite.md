@@ -2,7 +2,7 @@
 
 Print pretty tables:
 ```
-.mode column
+.mode table
 .headers on
 ```
 
