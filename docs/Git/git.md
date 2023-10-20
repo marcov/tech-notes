@@ -274,9 +274,16 @@ Git does not fetch orphaned commit IDs, i.e IDs not reachable by name.
 You first need to tag tag commit ID upstream.
 
 ## Fetch & update local branch
+
 This way, you don't need to `git checkout` and `git pull`.
 ```
 $ git fetch origin BRANCH-NAME:BRANCH-NAME
+```
+
+## Fetch a remote revision not associated to a branch
+
+```
+$ git fetch origin abcdef012345678900000000000000000000000
 ```
 
 ## Rewrite previous commits username and emails
