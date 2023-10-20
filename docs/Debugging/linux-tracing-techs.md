@@ -20,15 +20,18 @@ More info: https://jvns.ca/blog/2017/07/05/linux-tracing-systems/#kprobes
   For a given kretprobe, you can only execute up to `maxactive` parallel calls.
   `maxactive` default should be # of CPUs.
 
- Active kprobes show up in `/sys/kernel/debug/kprobes/list`
+ Active kprobes [k] and kretprobes [r] show up in
+ `/sys/kernel/debug/kprobes/list`.
 
- Legacy interface:
+ Legacy interface only:
 
  - kprobes show up in `/sys/kernel/tracing/kprobe_events`.
- - Number of hit and miss shown in `/sys/kernel/tracing/kprobe_profile`:
- ```
- event-name hit-count miss-count
- ```
+ - Number of hits and misses show up in `/sys/kernel/tracing/kprobe_profile`.
+   Format is:
+
+   ```
+   event-name hit-count miss-count
+   ```
 
 - uprobe: equivalent of kprobe in user space
 
