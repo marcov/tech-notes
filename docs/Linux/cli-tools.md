@@ -67,6 +67,25 @@ Delete empty lines:
 ```
 $ sed -e '/^$/d'
 ```
+
+or, with awk:
+
+```
+$ awk ''
+```
+
+equivalent to:
+
+```
+$ awk '$0'
+```
+
+equivalent to:
+
+```
+$ awk '$0 != "" {print $0;}'
+```
+
 ### Print only a given pattern found in a given line
 
 Make sed print only relevant pattern.
@@ -239,4 +258,24 @@ Use the `-T` option.
 This copies all files in `/source-dir` into `/dest-dir`.
 ```console
 $ cp -aT /source-dir /dest-dir
+```
+## xargs
+
+Run a command per line using `-I replstring`. E.g.:
+
+```console
+$ ls -1 | xargs -I file stat file
+```
+## awk
+
+Print all fields using the `OFS` separator using the "magic" `$1=$1` statement:
+
+```awk
+BEGIN {OFS="S";} {$1=$1; print $0;}
+```
+
+Filter lines by regex:
+
+```awk
+/foo.*bar/
 ```
