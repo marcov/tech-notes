@@ -20,7 +20,13 @@ Run a command and capture all its kernel functions calls:
 # trace-cmd report | less
 ```
 
-Capture a specific kernel function (and all functions it calls), for any process:
+Log whenever one or more function is called system-wide:
+
+```console
+# trace-cmd record -p function -l inet_recvmsg -l inet6_recvmsg -l inet_sendmsg -l inet6_sendmsg
+```
+
+Log whenever a specific kernel function (and all its call stack), for any process:
 
 ```console
 # trace-cmd record -p function_graph -O nofuncgraph-irqs -g __x64_sys_lseek
