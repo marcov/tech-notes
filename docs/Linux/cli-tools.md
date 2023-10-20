@@ -279,3 +279,10 @@ Filter lines by regex:
 ```awk
 /foo.*bar/
 ```
+
+Print numbers with thousands separator using the printf `%\047d` format:
+
+```console
+$ echo 1234567 | awk '{printf("%\047d\n", $0);}'
+1,234,567
+```
