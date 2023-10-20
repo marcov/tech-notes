@@ -40,25 +40,30 @@ TLDR:
 
 ## Make variables
 
-### Nomeclature
-- When running `make MYVAR=value` then MYVAR is said to be set  with "a command argument".
-  I.e., an argument that contains `=` specifies the value of a variable.
-  By doing that, all ordinary assignments of the same variable in the makefile are
-  ignored, i.e. the variable is _overridden_
+### Nomenclature
+
+- When running `make MYVAR=value` then MYVAR is said to be set  with "a command
+  argument". I.e., an argument that contains `=` specifies the value of a
+  variable. By doing that, all ordinary assignments of the same variable in the
+  `Makefile` being executed by `make` are ignored, i.e. the variable is
+  _overridden_
 
 ### Priority
 
 TLDR - Priority of how a value is set:
-1. (highest) value set in the makefile, e.g. `override VAR = value`.
+
+1. (highest) value set in the makefile using the `override` keyword, e.g.
+   `override VAR = value`.
 2. value passed to make via a command argument e.g. `make VAR = value`
 3. value set in the makefile, e.g. `VAR = value` or `VAR := value`
 4. value set in an environment variable, e.g. `VAR = value make`
-5. (lowest) value set in the makefile using conditional variable assignment, e.g. ` VAR ?= value`
+5. (lowest) value set in the makefile using conditional variable assignment,
+   e.g. ` VAR ?= value`
 
 From make man pages:
 >
-> Variables in make can come from the environment in which make is run.
-> Every environment variable that make sees when it starts up is transformed into a
+> Variables in make can come from the environment in which make is run. Every
+> environment variable that make sees when it starts up is transformed into a
 > make variable with the same name and value.
 >
 > However, an explicit assignment in the makefile, or with a command argument,
