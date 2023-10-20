@@ -61,3 +61,7 @@ function declaration and definition):
 - `:ts TAG-NAME` (aka `tselect`)
 - `:tj TAG-NAME` (aka `tjump`)
 - `g] TAG-NAME`
+
+## Undoing to previous versions of a file unreachable with u and r
+
+Pick a number from `:undolist`, and undo with `:undo {N}`.
