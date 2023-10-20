@@ -90,8 +90,9 @@ SIGSUSP (C-z).
 
 ### Threads and signals
 
-A signal may be process-directed or thread-directed. When process-directed, the
-signal is delivered to one of the thread that does not have the signal blocked.
+A signal may be **process-directed** (TGID) or **thread-directed** (TID). When
+process-directed, the signal is delivered to one of the thread that does not
+have the signal blocked.
 
 Each thread in a process has an independent signal mask, which indicates the
 set of signals that the thread is currently blocking. Use `sigprocmask()` to
@@ -102,12 +103,29 @@ in the group (i.e. TGID or PID). Quoting `pthread_kill(3)` (implemented using
 `tgkill()`):
 
 >
-> Signal  dispositions  are process-wide:
+> **Signals dispositions are process-wide**:
 >
-> - if a signal handler is installed, that same handler will be invoked for all
->   the threads in the group. Which thread wil run the handler? It's the thread
->   (PID) that got the signal. Different threads cannot have different
->   handlers!
-> - If the disposition of the  signal is STOP, CONT, TERMINATE, this action
+> - if a signal handler is installed, the handler is common for for all the
+>   threads in the group.
+>   What thread in the group run the handler? It's the thread (TID) that got
+>   the signal. The handler execution is scheduled in the thread execution,
+>   either waking the process from suspended state, or just scheduling the
+>   handler along the normal program execution. The handler is invoked on the
+>   thread stack (but i can also have a dedicate stack).
+>
+>   For a given signal different threads cannot have different handlers!
+
+> - If the disposition of the signal is STOP, CONT, TERMINATE, this action
 >   will affect all the threads of the process.
 >
+
+Similarly, you cannot send a signal causing a Term dispotion (such as SIGTERM)
+to just one thread without causing all the threads in the group to exit. See
+the next section for why.
+
+### Term disposition
+
+The term disposition causes `do_group_exit()` to be called on the target
+process, unless the process has registered an handler for the signal.
+I.e., it is equivalent to the process calling the `exig_group()` syscall,
+without it cleanly terminating from user space point of view.
