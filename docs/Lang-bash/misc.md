@@ -103,10 +103,14 @@ The `-n` option tells bash to only wait for **one** PID or jobspec from the
 provided arguments - whatever terminates first.
 
 E.g.:
+
 ```
 # Will only wait for the first PID that terminates among {1,2,3,4}.
 $ wait -n 1 2 3 4
 
 # Will wait for all PIDs
 $ wait 1 2 3 4
+
+# Will wait for all spawned children
+$ wait
 ```
