@@ -1,9 +1,12 @@
 # Linux/Unix Command Line Tools
 
-## Misc Utils
-- `ag`, `rg`, `ack`: better than `grep` for code
-- `xdg-open`: open the GUI application associated to a file
-- `cmp`: compare two files byte by byte
+## awk
+
+Print all fields using the `OFS` separator using the "magic" `$1=$1` statement:
+
+```awk
+BEGIN {OFS="S";} {$1=$1; print $0;}
+```
 
 ## cloud-image: set initial password
 > NOTE: img can be a qcow2:
@@ -20,9 +23,9 @@ Or also:
 ><fs> list-filesystems
 ><fs> mount /dev/vda1 /
 ><fs> vi /etc/shadow
-```
+
 #NOTE: REMOVE the `!!` from the file
-```
+
 ><fs> umount /
 ><fs> exit
 ```
@@ -38,7 +41,29 @@ Or also:
 # qemu-nbd -d /dev/nbd0
 ```
 
+Filter lines by regex:
+
+```awk
+/foo.*bar/
+```
+
+Print numbers with thousands separator using the printf `%\047d` format:
+
+```console
+$ echo 1234567 | awk '{printf("%\047d\n", $0);}'
+1,234,567
+```
+
+## Meta
+
+Misc utils:
+
+- `ag`, `rg`, `ack`: better than `grep` for code
+- `xdg-open`: open the GUI application associated to a file
+- `cmp`: compare two files byte by byte
+
 ## nohup: keep a command running even when the terminal is closed
+
 ```
 $ nohup <command> <command options> &
 ```
@@ -119,32 +144,6 @@ On OpenWRT:
 $ start-stop-daemon -S -b -x /root/usb/coredns --  -conf /root/usb/Corefile -pidfile /var/run/coredns.pid
 ```
 
-## TMUX
-### Copy lines into buffer:
-`prefix` + `:`, type `capture-pane -S -<NUM OF LINES TO SAVE>`
-
-### Save buffer to file:
-`prefix` + `:`, type `save-buffer filename.txt`
-
-### Move pane to a new window
-
-While on current pane: `prefix :break-pane`
-
-## update-alternatives
-### Basic usage
-```
-$ sudo update-alternatives --display vi
-$ sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 99
-$ sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 100
-$ sudo update-alternatives --config vi
-$ sudo update-alternatives --remove-all vi
-```
-
-## xset: configure display features
-### Query settings
-```
-$ xset q
-```
 
 ### Enable DPMS
 ```
@@ -160,6 +159,7 @@ $ xset dpms force on
 `rcconf`: configure startup services on Debian
 
 ## find
+
 Execute a command for each result of `find`:
 
 Either use `';'` or `\;`:
@@ -195,6 +195,27 @@ Or, used `sed -n 's///p'` ...
 ```
 $ getent ahosts google.com
 $ getent hosts localhost
+```
+
+## mtr - my tracerouter
+
+`mtr` combines the functionality of the traceroute and ping programs in a single
+network diagnostic tool.
+
+## openssl cheats
+
+See a certificate content:
+```
+$ openssl x509 -text -noout -in /PATH/TO/THE/CERT.crt
+```
+
+## copy _ALL_ files from a directory
+
+Use the `-T` option.
+
+This copies all files in `/source-dir` into `/dest-dir`.
+```console
+$ cp -aT /source-dir /dest-dir
 ```
 
 ## SSH
@@ -241,24 +262,66 @@ define patterns.
 The line `LogLevel ERROR` suppresses the `Warning: Permanently added ...`
 warning message printed at every connection.
 
-## mtr - my tracerouter
-`mtr` combines the functionality of the traceroute and ping programs in a single
-network diagnostic tool.
+## sudo
 
-## openssl cheats
-See a certificate content:
+sudo does not forward some signals sent from the same process group. So, if you
+have a script does does this this this this:
+
+```sh
+sudo some-command &
+pid=$!
+sudo kill -TERM $pid
 ```
-$ openssl x509 -text -noout -in /PATH/TO/THE/CERT.crt
+
+the command will never be SIGTERM-ed. A workaround is to:
+
+```sh
+setsid sudo kill -TERM $pid
 ```
 
-## copy _ALL_ files from a directory
+Explanation is only found in the sudo source code:
 
-Use the `-T` option.
-
-This copies all files in `/source-dir` into `/dest-dir`.
-```console
-$ cp -aT /source-dir /dest-dir
+```c
+/*
+ * Do not forward signals sent by a process in the command's process
+ * group, as we don't want the command to indirectly kill itself.
+ * For example, this can happen with some versions of reboot that
+ * call kill(-1, SIGTERM) to kill all other processes.
+ */
 ```
+
+One
+## TMUX
+
+### Copy lines into buffer:
+`prefix` + `:`, type `capture-pane -S -<NUM OF LINES TO SAVE>`
+
+### Save buffer to file:
+`prefix` + `:`, type `save-buffer filename.txt`
+
+### Move pane to a new window
+
+While on current pane: `prefix :break-pane`
+
+## update-alternatives
+
+### Basic usage
+
+```
+$ sudo update-alternatives --display vi
+$ sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 99
+$ sudo update-alternatives --install /usr/bin/vi vi /usr/bin/vim 100
+$ sudo update-alternatives --config vi
+$ sudo update-alternatives --remove-all vi
+```
+
+## xset: configure display features
+
+### Query settings
+```
+$ xset q
+```
+
 ## xargs
 
 Run a command per line using `-I replstring`. E.g.:
@@ -266,23 +329,4 @@ Run a command per line using `-I replstring`. E.g.:
 ```console
 $ ls -1 | xargs -I file stat file
 ```
-## awk
 
-Print all fields using the `OFS` separator using the "magic" `$1=$1` statement:
-
-```awk
-BEGIN {OFS="S";} {$1=$1; print $0;}
-```
-
-Filter lines by regex:
-
-```awk
-/foo.*bar/
-```
-
-Print numbers with thousands separator using the printf `%\047d` format:
-
-```console
-$ echo 1234567 | awk '{printf("%\047d\n", $0);}'
-1,234,567
-```
