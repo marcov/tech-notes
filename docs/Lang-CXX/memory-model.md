@@ -217,7 +217,7 @@ loop(foo);
 ```
 
 you force the compiler to always do a memory access (the three stores gets
-folder into a single store of imm. 3).
+folded into a single store of imm. 3).
 
 ---
 
