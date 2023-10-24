@@ -8,16 +8,29 @@ Print all fields using the `OFS` separator using the "magic" `$1=$1` statement:
 BEGIN {OFS="S";} {$1=$1; print $0;}
 ```
 
+Filter lines by regex
+
+```awk
+/foo.*bar/
+```
+
+##Print numbers with thousands separator using the printf `%\047d` format:
+
+```console
+$ echo 1234567 | awk '{printf("%\047d\n", $0);}'
+1,234,567
+```
+
 ## cloud-image: set initial password
+
 > NOTE: img can be a qcow2:
 
 ```
 $ sudo virt-customize -a ubuntu-16.04-server-cloudimg-amd64-disk1.img --root-password password:linux
 ```
-
 Or also:
 
-```
+```console
 # guestfish --rw -a <qcow2 image file name>
 ><fs> run
 ><fs> list-filesystems
@@ -30,7 +43,7 @@ Or also:
 ><fs> exit
 ```
 
-Or also:
+Or **also**:
 
 ```console
 # modprobe nbd max_part=8 &&
@@ -39,19 +52,6 @@ Or also:
 # chroot a sh -c "echo 'root:password' | chpasswd"
 # umount /mnt
 # qemu-nbd -d /dev/nbd0
-```
-
-Filter lines by regex:
-
-```awk
-/foo.*bar/
-```
-
-Print numbers with thousands separator using the printf `%\047d` format:
-
-```console
-$ echo 1234567 | awk '{printf("%\047d\n", $0);}'
-1,234,567
 ```
 
 ## Meta
@@ -143,7 +143,6 @@ On OpenWRT:
 ```
 $ start-stop-daemon -S -b -x /root/usb/coredns --  -conf /root/usb/Corefile -pidfile /var/run/coredns.pid
 ```
-
 
 ### Enable DPMS
 ```
@@ -290,8 +289,7 @@ Explanation is only found in the sudo source code:
  */
 ```
 
-One
-## TMUX
+## tmux
 
 ### Copy lines into buffer:
 `prefix` + `:`, type `capture-pane -S -<NUM OF LINES TO SAVE>`
