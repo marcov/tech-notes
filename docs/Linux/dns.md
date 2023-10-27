@@ -1,6 +1,6 @@
 # DNS Tools
 
-## getent: low-level host name resolution tool (nslookup alternative)
+## getent: low-level host name resolution tool
 
 >
 > NOTE: getent can do much more: displays entries from databases, configured in
