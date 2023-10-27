@@ -54,9 +54,9 @@ TLDR - Priority of how a value is set:
 
 1. (highest) value set in the makefile using the `override` keyword, e.g.
    `override VAR = value`.
-2. value passed to make via a command argument e.g. `make VAR = value`
+2. value passed to make via a command argument e.g. `make VAR=value`
 3. value set in the makefile, e.g. `VAR = value` or `VAR := value`
-4. value set in an environment variable, e.g. `VAR = value make`
+4. value set in an environment variable, e.g. `VAR=value make`
 5. (lowest) value set in the makefile using conditional variable assignment,
    e.g. ` VAR ?= value`
 

@@ -93,6 +93,11 @@ $ sudo bpftrace -e 'kprobe:icmp_echo { print(kstack); }'
 $ ping localhost
 ```
 
+Hook using trampolines:
+```console
+sudo bpftrace -e 'kretfunc:inet_release { printf("%s: ret: %lx, stack: %s\n", probe, retval, kstack);}'
+```
+
 ## bcc
 
 Wrapper for `bpf()` syscall (BPF_PROG_LOAD).

@@ -248,7 +248,9 @@ See: https://lore.kernel.org/bpf/20200228223948.360936-1-andriin@fb.com/
 
 ## BPF spinlocks
 
-Used to mutex access/updates to a single map element.
+- Used to mutex access/updates to a single map element.
+- Cannot be used in tracing programs because of preemption.
+- Need one spinlock per  map element.
 
 ## CORE
 

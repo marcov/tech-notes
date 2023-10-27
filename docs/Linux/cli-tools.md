@@ -1,26 +1,5 @@
 # Linux/Unix Command Line Tools
 
-## awk
-
-Print all fields using the `OFS` separator using the "magic" `$1=$1` statement:
-
-```awk
-BEGIN {OFS="S";} {$1=$1; print $0;}
-```
-
-Filter lines by regex
-
-```awk
-/foo.*bar/
-```
-
-##Print numbers with thousands separator using the printf `%\047d` format:
-
-```console
-$ echo 1234567 | awk '{printf("%\047d\n", $0);}'
-1,234,567
-```
-
 ## cloud-image: set initial password
 
 > NOTE: img can be a qcow2:
@@ -186,15 +165,6 @@ E.g.: make grep print ONLY the next word after 'foo', and nothing else:
 $ grep -P -o 'foo \K[^ ]+'
 ```
 Or, used `sed -n 's///p'` ...
-
-## getent: low-level host name resolution tool (nslookup alternative)
-> NOTE: getent can do much more: displays entries from databases, configured in
-`/etc/nsswitch.conf`.
-
-```
-$ getent ahosts google.com
-$ getent hosts localhost
-```
 
 ## mtr - my tracerouter
 
