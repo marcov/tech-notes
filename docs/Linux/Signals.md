@@ -12,11 +12,15 @@ It can be one of:
 A process can change that action using `sigaction()` or `signal()`. The change
 can be:
 
-- perform the default action
+- Perform the default action
 - Ignore
 - Catch the signal with a signal handler function
 
 You cannot however change the dispostion for `SIGKILL` and `SIGSTOP`.
+
+In addition, there are a few signals that when sent by the kernel are "forced"
+with default dispotion on the process. See kernel's `force_sig_fault()`,
+`force_fatal_signal()` et al.
 
 The signal disposition is a **per-process** attribute. So the action will be
 the same **for all the threads**.

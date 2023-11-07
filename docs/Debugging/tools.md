@@ -98,6 +98,15 @@ Hook using trampolines:
 sudo bpftrace -e 'kretfunc:inet_release { printf("%s: ret: %lx, stack: %s\n", probe, retval, kstack);}'
 ```
 
+Get all hookable functions with:
+
+```console
+sudo bpftrace -l
+```
+
+Note: it's only showing kfunc and kfunc, but probes can also be set on
+`kretfunc` and `kretprobe`.
+
 ## bcc
 
 Wrapper for `bpf()` syscall (BPF_PROG_LOAD).
