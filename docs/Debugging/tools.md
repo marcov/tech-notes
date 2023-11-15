@@ -84,13 +84,20 @@ Useful options:
 
 New gen tracing tool inspired by DTrace, using eBPF.
 
-Print kernel stack trace:
+Print kernel stack trace with `kstack`.
 
 ```console
 $ sudo bpftrace -e 'kprobe:icmp_echo { print(kstack); }'
 
 # in another term
 $ ping localhost
+```
+
+- Print a timestamp with `nsec`.
+- Get the current task with `curtask`:
+
+```console
+sudo bpftrace -e 'kfunc:__tcp_transmit_skb { printf("%d %s: %s\n", nsecs, curtask->comm, kstack);}'
 ```
 
 Hook using trampolines:
