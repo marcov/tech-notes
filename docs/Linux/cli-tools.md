@@ -216,7 +216,14 @@ $ ssh -L 5901:127.0.0.1:5901 -N -f -p SSH-PORT -l pi example.com
 $ xtigervncviewer
 ```
 
-### Do not store key fingerprints of each host in `~/.ssh/known_hosts`
+### Terminate stuck session without closing the terminal window
+
+- Use the escape sequence - input one char by one: `Enter` + `~` + `.`
+
+- If the SSH session is nested, add more `~`.
+  Eg. SSH in SSH: `Enter` + `~` + `~` + `.`
+
+### How to avoid storing key fingerprints of each host in `~/.ssh/known_hosts`
 
 ```
 Host 10.* 192.168.* 172.*
