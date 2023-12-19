@@ -1,4 +1,23 @@
-# Special Variables and Parameters Substitution
+## Variables
+
+bash does not seem to be able to shadow global readonly variables.
+So, a `local` cannot shadow a global defined with `declare -r`.
+So, e.g. this code:
+
+```sh
+declare -r port="{1:-}"
+
+my_function(){
+    local port=${1:-1234}"
+    echo "Port: _$port_"
+}
+
+my_function "${port}"
+```
+
+Prints `Port: __`.
+
+## Special Variables
 
 `${@}`:  all parameters passed
 
