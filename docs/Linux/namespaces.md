@@ -142,14 +142,18 @@ Once both no process is in the namespace, and no nsfs mountpoint exits for the
 namespace, the namespace disappears.
 
 You can very well create a network namespace for init:
+
 ```
 $ sudo touch /var/run/netns/init_netns
 $ sudo mount -o bind /proc/1/ns/net /var/run/netns/init_netns
+
 $ sudo ip netns ls
 init_netns
+
 $ sudo ip netns exec init_netns ip a
 ....# same stuff you would see with `ip a` in the init namespace...
 ```
+
 #### Concepts
 Network namespace NAME:
 - created with `ip netns add NETNSNAME`.
