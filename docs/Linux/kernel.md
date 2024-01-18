@@ -19,3 +19,10 @@ CONFIG_SYSTEM_REVOCATION_KEYS=""
 # build all the packages
 $ nice make -j`nproc` bindeb-pkg
 ```
+
+## Extract vmlinux from vmlinuz
+
+From the Linux kernel source tree:
+```sh
+./scripts/extract-vmlinux vmlinuz > /tmp/vmlinux
+```
