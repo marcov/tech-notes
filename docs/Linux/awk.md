@@ -1,37 +1,45 @@
 # awk
 
-Merge lines:
+## Print multiple lines on the same row:
 
 ```awk
-awk '{printf("%s ", $0);}'
+echo "a\nb\nc" | awk '{printf("%s,",$0);}'
+a,b,c,
 ```
 
-Change output separator: use `OFS` + the "magic" `$1=$1` statement:
+## Change separator when printing fields
+
+Use `OFS` + the "magic" `$1=$1` statement:
 
 ```awk
-BEGIN {OFS="S";} {$1=$1; print $0;}
+echo "a b c" | awk 'BEGIN {OFS=",";} {$1=$1; print $0;}'
+a,b,c
 ```
 
-Filter lines by regex:
+## Filter lines by regex
 
 ```awk
 /foo.*bar/
 ```
 
-Filter lines by line number:
+## Filter lines by line number
 
 ```awk
 awk 'NR <= 10'
 ```
 
-Print numbers with thousands separator using the printf `%\047d` format:
+## Print numbers with thousands separator
+
+Use the printf `%\047d` format.
 
 ```console
 $ echo 1234567 | awk '{printf("%\047d\n", $0);}'
 1,234,567
 ```
 
-Escape single quote `'` with `'\''`:
+## Escape single quote '
+
+Use `'\''`.
 
 ```awk
 # Replace ' with whitespace:
