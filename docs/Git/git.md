@@ -258,6 +258,7 @@ $ git checkout -b LOCAL-BRANCH origin/remote-branch-name
 Just add those files to `$GIT_DIR/info/exclude`.
 
 ## Prevent changes to a tracked file to show up in `git status`
+
 Add this to your config:
 ```
 [alias]

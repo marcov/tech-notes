@@ -25,7 +25,7 @@ int main(void)
   contrary, the constructor is explicitly defaulted, but is (I think) syntax
   sugar.
 
-- We are not calling the constructor, so the object _default initialized_.
+- We are not calling the constructor, so the object is _default initialized_.
 
 - Despite of this, the objet members are in a undetermined state.
 
