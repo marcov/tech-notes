@@ -49,3 +49,25 @@ When receiving, we are always getting the full IP + TCP/UDP headers.
 When a packet is received, it is passed to any raw sockets which have been
 bound to the packet protocol, before the packet being passed to other protocols
 handlers.
+
+## Block network for one process
+
+If you can control how to start the process, you can start it in a new network
+namespaces with no network interfaces.
+
+If you don't have control of the process, you can use cgroups + iptables:
+
+```
+mkdir /sys/fs/cgroup/net_cls/block
+echo 42 > /sys/fs/cgroup/net_cls/block/net_cls.classid
+
+iptables -A OUTPUT -m cgroup --cgroup 42 -j DROP
+
+echo [pid] > /sys/fs/cgroup/net_cls/block/tasks
+```
+
+Unblock with:
+
+```
+echo [pid] >/sys/fs/cgroup/net_cls/tasks
+```

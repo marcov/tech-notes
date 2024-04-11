@@ -288,3 +288,8 @@ int main() {
         ctr++
     }
 ```
+
+## std::atomic_ref and pointers to atomic plain data
+
+C++ introduced atomic_ref to allow atomic access to any kind of data, even when
+not declared atomic

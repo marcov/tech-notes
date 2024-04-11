@@ -37,7 +37,6 @@ directory corresponds to the credentials ot `PID`.
 e.g. allow interactive users to run command in fg / bg.
 
 
-
 ## Symbolic process stack
 
 `/proc/[pid]/stack`: This file provides a symbolic trace of the function calls in
@@ -116,3 +115,7 @@ Besides, the raw `_exit()` terminates only the calling thread.
 ### Sharing fds between processes
 
 - Use `SCM_RIGHTS`: pass a fd b/w processes using UNIX sockets.
+
+## User Mode and Kernel mode stacks
+
+When running in kernel mode, the process uses a kernel-private stack.
