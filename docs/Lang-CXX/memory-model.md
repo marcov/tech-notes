@@ -145,6 +145,15 @@ Folding a load: Any atomic load from a constant global can be constant-folded,
 because it cannot be observed. Similar reasoning allows SROA (scalar
 replacement of aggregates) with atomic loads and stores.
 
+### std::atomic_ref
+
+It is a class template to provide atomic operations on a non-atomic variable -
+it atomically interprets in-place a non-atomic variable or memory address.
+
+C++ introduced atomic_ref to allow atomic access to any kind of data, even when
+not declared atomic. For the lifetime of the `std::atomic_ref` object, the
+object it references is considered an atomic object.
+
 ## Fences
 
 Explicit barriers against reordering.
@@ -288,8 +297,3 @@ int main() {
         ctr++
     }
 ```
-
-## std::atomic_ref and pointers to atomic plain data
-
-C++ introduced atomic_ref to allow atomic access to any kind of data, even when
-not declared atomic

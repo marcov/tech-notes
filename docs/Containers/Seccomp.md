@@ -1,7 +1,7 @@
 # Seccomp
 
 ### Checking status
-You can check if Seccomp is active is active for a specific process with:
+You can check if Seccomp is active for a specific process with:
 
 ```
 grep Seccomp /proc/$PID/status

@@ -224,8 +224,10 @@ $ git push [remote-name] <ID>:<upstream-branch-name>
 
 $ git branch --contains=HEAD
 foo
+
 # Push HEAD in foo to remote branch bar
 $ git push origin HEAD:bar
+
 # Push branch foo to remote branch bar
 $ git push origin foo:bar
 ```

@@ -33,20 +33,26 @@ $ addr2line -e app-name 1234abcd
 $ ldd [-v] <path_to_tool>
 ```
 
+>
+> NOTE: use wide option to get the symbols names printed.
+>
+
 Or:
 ```
-$ readelf -d <path_to_tool>
+$ readelf --wide -d <path_to_tool>
 ```
 
 ### List symbols used from specific libraries
 ```
-$ readelf -a <executable>
+$ readelf --wide -s <executable>
 ```
 
 (E.g. symbols used from GLIBC):
 ```
-$ readelf -a <executable> | grep GLIBC*
+$ readelf --wide -s <executable> | grep GLIBC*
 ```
+
+## List of symbols
 
 ## Process Memory Map
 

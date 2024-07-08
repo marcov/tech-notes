@@ -2,7 +2,8 @@
 
 ## perf
 
-- Found in the kernel source tree at "/tools/perf" (package: "linux-tools")
+- Tool available in the kernel source tree at "/tools/perf" (package:
+  "linux-tools")
 - Kernel profiling & sampling, statistics
 - Sample first, analyze later
 - Can instrument tracepoints, kprobes, uprobes, USDT probes.
