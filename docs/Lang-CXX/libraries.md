@@ -6,30 +6,34 @@
 >
 
 ## Static Library (.a) - Statically Linked Library
+
 A Library that is linked statically in an executable, i.e. the executable self
 contains all the library symbols it needs to run.
 
 ## Shared Library (.so) - Dynamically Linked Library
+
 Aka DSO - "Dynamic Shared Object(s)".
-A library that is shared among different applications, i.e. it is loaded in memory
-only one time for all the applications linked to it.
+A library that is shared among different applications, i.e. it is loaded in
+memory only one time for all the applications linked to it.
 
 It is loaded by the kernel.
 
 ### Dynamic Linker
 
-Used to load shared libraries. Aka `ld-linux` somewhere in `/lib/ld-linux.so.*`
-You can invoke the linker as an executable, followed by an ELF file.
+Used to load shared libraries. Aka `ld.so` or `ld-linux.so`, somewhere in
+`/lib/ld-linux.so.*`. You can invoke the linker as an executable, followed by
+an ELF file.
 
-List all shared libraries resolution:
+List all shared libraries and how they are resolved:
 ```
 $ /lib64/ld-linux-x86-64.so.2 --list <path to executable>
 ```
 
 Relevant variables:
-- `LD_PRELOAD`: unconditionally preload the specified shared library, even if the
-program did not request it.
-This is done before actually loading the library the program requested.
+
+- `LD_PRELOAD`: unconditionally preload the specified shared library, even if
+  the program does not require it. This is done before actually loading the
+  libraries the program requested.
 
 - `LD_LIBRARY_PATH`: the path to look at when loading libraries, before looking into
 system paths.
@@ -43,8 +47,10 @@ Library that is loaded at runtime using `dlopen(...)`. This is useful when you
 want to load at runtime some code in a library, like a plugin.
 
 ## PLT and GOT
-PLT: Procedure Linkage Table. Stub of code that looks up for a shared library addresses
-for functions in a table, called GOT: Global Offset Table.
+
+PLT: Procedure Linkage Table. Stub of code that looks up for a shared library
+addresses for functions in a table, called GOT: Global Offset Table.
+
 >
 > NOTE: addresses are actually stored / looked up in the .got.plt table!
 >
@@ -81,12 +87,15 @@ The PLT is first trying to jump in the GOT entry for the function.
 - [PLT/GOT](https://systemoverlord.com/2017/03/19/got-and-plt-for-pwning.html)
 
 ## LD Flags
+
 ### Start and end group
+
 Used for tstatic libraries / archives only.
 Wrap archives with `--start-group`, `--end-group` to allow specifying archives in
 any order; references resolution done also for circular references.
 
 ### As needed / Not as needed
+
 `--no-as-needed` is the default linking mode for shared libraries  =>
 the library is always added as dependency (as shown by ldd), even if not used at
 all.
@@ -95,6 +104,7 @@ all.
 it is actually needed / contains symbols needed by other objects.
 
 ### Statically link a single library
+
 Assuming you have the statically version of the lib installed (typically distributed
 in a -dbg package), this tells `ld` to switch to statically `libfoo`:
 
@@ -103,14 +113,19 @@ in a -dbg package), this tells `ld` to switch to statically `libfoo`:
 ```
 
 ## pkg-config
-Given a library package name installed on the system, retrieve metadata about that library.
-E.g.:
+
+Given a library package name installed on the system, retrieve metadata about
+that library. E.g.:
+
 - it can be used to retrieve library compile and link flags.
+
 ```
 $ pkg-config --cflags --libs uuid # uuid is the name of the library / name of the package containing the library
 -I/usr/include/uuid -luuid
 ```
+
 List all libraries packages name:
+
 ```
 $ pkg-config --list-all
 ```
@@ -127,6 +142,7 @@ Equivalent of `LD_DEBUG=libs <executable>`.
 Shared library that the kernel automatically loads into the process memory space.
 It is used to map a subset of frequently used syscall, to avoid all of the overhead
 of context switching:
+
 - Only a very limited set of syscall is mapped (`gettimeofday`, `time`, ...)
 - You can actually see the lib with `ldd binary-name` (`linux-vdso.so.1`)
 - Library is built when you build the kernel. You can load symbols from it, as any
