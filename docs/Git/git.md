@@ -257,7 +257,10 @@ $ git checkout -b LOCAL-BRANCH origin/remote-branch-name
 
 ## Ignore files without changing `.gitignore`
 
-Just add those files to `$GIT_DIR/info/exclude`.
+Add file paths to either:
+
+a. `.git/info/exclude` - ignore files only in a given repo.
+b. `~/.config/git/ignore` - ignore files in any repo on this system.
 
 ## Prevent changes to a tracked file to show up in `git status`
 

@@ -125,21 +125,27 @@ You cannot associate back to the original user NS though, because once you leave
 a parent user NS, you lose all capabilities in that NS and they cannot be regained.
 
 ### Network Namespaces
-Network namespaces cannot be nested. That's because, after all, an network device
-can be in one and one only network namespace, so there's no point in nesting them.
 
-How to occupy a network NS:
-- with a process.
-- (pseudo-filesystem nsfs-type) with a mount bind (usually in `/var/run/netns/NSNAME`)
-  * the name of the file is the name of the network namespace
-  * the file is a bind mount from `/proc/<PID_IN_NET_NAMESPACE>/ns/net` to `/var/run/netns/NSNAME`
-  * the inode (as shown by `stat`) of `/var/run/netns/NSNAME` is the network namespace identifier.
-  * the namespace exists even if there is no process associated to it, i.e. even if
-  there is no process for which the inode ID of the symlink `/proc/PID/ns/net` is
-  the inode ID of `/var/run/netns/NSNAME`.
+Network namespaces cannot be nested. If you think about, a network device can
+be in one and one only network namespace, so there's no point in nesting.
 
-Once both no process is in the namespace, and no nsfs mountpoint exits for the
-namespace, the namespace disappears.
+A network namespace persists as long as:
+
+- There is a process associated to that network NS
+
+OR
+
+- There is a file in the nsfs special FS type (usually mounted at
+  `/var/run/netns/`), and:
+
+  * name of the file = name of the network namespace
+  * file: created by bind mount `/proc/<PID_IN_NET_NAMESPACE>/ns/net` to
+    `/var/run/netns/NSNAME`
+  * file inode: inode as shown by `stat` of `/var/run/netns/NSNAME` is the
+    network namespace identifier.
+  * the namespace will persist even if there is no process associated to it,
+    i.e. even if there is no process for which the inode ID of
+    `/proc/PID/ns/net` is equal to the inode ID of `/var/run/netns/NSNAME`.
 
 You can very well create a network namespace for init:
 

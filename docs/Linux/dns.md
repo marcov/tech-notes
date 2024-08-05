@@ -29,7 +29,7 @@ $ getent hosts localhost
 
 Yet another DNS lookup tool.
 
-Query for mx record:
+Query for MX record:
 
 ```
 $ host -t MX f5.com 1.1.1.1
@@ -37,7 +37,7 @@ $ host -t MX f5.com 1.1.1.1
 
 ## dig
 
-DNS over UDP:
+Force DNS over UDP:
 
 ```
 $ dig @1.1.1.1 +notcp google.com

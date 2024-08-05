@@ -98,7 +98,15 @@ std::string str = "foo\0bar"s;
 
 Or to get a substring out of a string:
 
-## Kind of inheritances
+## Types of inheritance
+
+Variables:
+
+- public: accessible everywhere
+- protected: accessible only by derived classes
+- private: accessible only by inside the class
+
+Inheritance:
 
 ```
 class A
@@ -113,23 +121,26 @@ class A
 
 class B : public A
 {
-    // x is public
-    // y is protected
-    // z is not accessible from B
+    // Effect of using public inheritance:
+    // x stays public
+    // y stays protected
+    // z is not accessible in this class
 };
 
 class C : protected A
 {
-    // x is protected
-    // y is protected
-    // z is not accessible from C
+    // Effect of using protected inheritance:
+    // x becomes protected
+    // y stays protected
+    // z is not accessible in this class
 };
 
 class D : private A    // 'private' is default for classes
 {
-    // x is private
-    // y is private
-    // z is not accessible from D
+    // Effect of using private inheritance:
+    // x becomes private
+    // y becomes private
+    // z is not accessible in this class
 };
 ```
 

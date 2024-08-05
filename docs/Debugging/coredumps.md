@@ -55,8 +55,8 @@ Or just: `gdb ./myapp core.####`
 
 ## Pairing a coredump with a binary & debug files
 
-There _should_ be a "Build ID" is stored in executables & debug files. You can
-get it e.g. with `readelf -a` and compare it with the ID in the corefile.
+There _should_ be a "Build ID" stored in executables & debug files. You can
+obtain it e.g. with `readelf -a` and compare it with the ID in the corefile.
 
 ```console
 $ readelf -a /usr/bin/python3

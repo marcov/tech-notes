@@ -239,23 +239,26 @@ set substitute-path /from/path /to/path
 ```
 
 ## Shared libraries
-Info on the shared library loaded by the debugged application (load adddress ranges
-and library path.
-This includes both libraries loaded by ld (dynamic linker) and `dlopen()`'ed libraries.
+
+Info on the shared library loaded by the debugged application (load adddress
+ranges and library path.
+This includes both libraries loaded by ld.so (dynamic linker) and `dlopen()`'ed
+libraries.
+
 ```
-info shared[library]
+info shared [library]
 ```
 
 Match addresses of a shared libraries .so with the runtime addresses:
 
-- `readelf -a lib.so` / `objdump -d lib.so` will provide relative addresses inside the library.
+- `readelf -W -a lib.so` / `objdump -d lib.so` will provide relative addresses inside the library.
 - The start address shown by GDB `info shared` is for the `.text` section inside the .so
 - So, if GDB is showing address `0x00007ffffaaaabbb` for an instruction address,
   and library is loaded in the range `0x00007ffffaaaa000 - 0x00007ffffaaaafff`:
   * `0x00007ffffaaaabbb` - `0x00007ffffaaaa000` + `.text address` will give you
   the address inside the library as can be seen with `objdump -d` / `readelf`.
 
-## Examine memory certain address
+## Examine memory at certain address
 Disassemble at specific address:
 
 (`$pc` stands for program counter register):
