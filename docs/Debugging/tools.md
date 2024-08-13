@@ -114,6 +114,12 @@ sudo bpftrace -l
 Note: it's only showing kfunc and kfunc, but probes can also be set on
 `kretfunc` and `kretprobe`.
 
+Attach a uprobe on SSL write exit:
+
+```console
+sudo bpftrace -e 'uretprobe:/usr/lib/x86_64-linux-gnu/libssl.so.3:SSL_write{ printf("%d\n", retval); }'
+```
+
 ## bcc
 
 Wrapper for `bpf()` syscall (BPF_PROG_LOAD).

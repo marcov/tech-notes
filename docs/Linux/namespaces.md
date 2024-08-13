@@ -30,8 +30,9 @@ Namespaces CAN'T be empty. Something must be inside it, and if not,
 kernel automatically garbage collects it by reference counting.
 
 How to occupy a namespace:
+
 - A running process
-- A bind mound `=>` kernel will maintain the NS independently of a running process.
+- A bind mount `=>` kernel will maintain the NS independently of a running process.
 
 Do it with:
 ```

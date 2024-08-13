@@ -305,3 +305,45 @@ Run a command per line using `-I replstring`. E.g.:
 $ ls -1 | xargs -I file stat file
 ```
 
+## QEMU
+
+Boot an img file:
+
+```console
+qemu-system-x86_64 -enable-kvm -drive file=openwrt-23.05.3-x86-64-generic-ext4-combined-efi.img -m 2G -smp 4 -machine type=q35,accel=kvm -serial mon:stdio -nographic
+```
+
+Add networking via slirp:
+
+```
+-netdev user,id=qemu-net,net=192.168.1.0/24,dhcpstart=192.168.1.100 -device virtio-net-pci,netdev=qemu-net
+```
+
+>
+> NOTE - to make this work, remember that:
+>
+> - you need to setup the guest network i/f in DHCP mode
+>
+> - pinging from inside the guest wont work without this extra sysctl config
+>   done on the host:
+>
+>   * Set what range of group ids is allowed to use ICMP sockets in
+>     /etc/sysctl.conf (make sure to reload with `sysctl
+>     --load=/etc/sysctl.conf` ...)
+>
+>     ```
+>     net.ipv4.ping_group_range = 0   1000
+>     ```
+>
+
+Add host ports forward:
+
+Append to `-netdev user,...` the extra option `hostfwd`. Syntax is
+`hostfwd=hostip:hostport-guestip:guestport`.
+
+E.g., to add SSH forward, use `,hostfwd=tcp::2222-:22`. You can then SSH into
+the guest using `ssh -p2222 root@localhost`
+
+## inotifywatch, inotifywait
+
+Detect when a given file is accessed on the system.

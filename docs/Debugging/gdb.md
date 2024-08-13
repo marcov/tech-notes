@@ -118,6 +118,7 @@ bt full
 ```
 
 ### All threads
+
 ```
 thread apply all bt
 ```
@@ -320,22 +321,24 @@ replay == scheduler locked in replay mode and unlocked during normal execution.
 > set scheduler-locking step
 > # this will ignore breaks by other threads
 ```
+
 ## Following child on fork
 
-If you want to follow the child process instead of the parent process, use the
-command set follow-fork-mode.
+Follow the child process instead of the parent process:
 
 ```
 set follow-fork-mode child
 ```
-(the default is `parent` instead of `child`)
 
-you can follow both with:
+(the default is `parent`)
+
+Follow both with:
 
 ```
 set detach-on-fork off
 ```
-(the default is `on` instad of `off`)
+
+(the default is `on`)
 
 Both processes will be held under the control of GDB. One process (child or
 parent, depending on the value of follow-fork-mode) is debugged as usual, while

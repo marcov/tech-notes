@@ -43,11 +43,13 @@ $ readelf --wide -d <path_to_tool>
 ```
 
 ### List symbols used from specific libraries
+
 ```
 $ readelf --wide -s <executable>
 ```
 
 (E.g. symbols used from GLIBC):
+
 ```
 $ readelf --wide -s <executable> | grep GLIBC*
 ```
