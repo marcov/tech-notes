@@ -22,3 +22,7 @@ theme: alabaster
 #- References: 'references.md'
 #
 #google_analytics: ['UA-#########-#', 'docs.sba.lat']
+
+plugins:
+  - search
+
