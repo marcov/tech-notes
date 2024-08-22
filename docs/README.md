@@ -21,3 +21,7 @@ rendering documentation pages:
 ```console
 $ mkdocs serve [-a LISTEN-IP:LISTEN-PORT] [--livereload]
 ```
+
+## Linting
+
+Use `ruby-mdl`.

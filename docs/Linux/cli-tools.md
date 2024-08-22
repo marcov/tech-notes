@@ -347,3 +347,11 @@ the guest using `ssh -p2222 root@localhost`
 ## inotifywatch, inotifywait
 
 Detect when a given file is accessed on the system.
+
+## unshare
+
+Create a new user namespace, map root user to current user:
+
+```
+unshare --user --map-auto --map-root-user
+```
