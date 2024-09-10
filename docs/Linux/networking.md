@@ -59,16 +59,89 @@ passed to other protocols handlers.
 - If you don't have control of the process, you can use cgroups + iptables:
 
 ```
-mkdir /sys/fs/cgroup/net_cls/block
-echo 42 > /sys/fs/cgroup/net_cls/block/net_cls.classid
+mkdir /sys/fs/cgroup/net_cls/blocked-network
+echo 42 > /sys/fs/cgroup/net_cls/blocked-network/net_cls.classid
 
 iptables -A OUTPUT -m cgroup --cgroup 42 -j DROP
 
-echo [pid] > /sys/fs/cgroup/net_cls/block/tasks
+echo [pid] > /sys/fs/cgroup/net_cls/blocked-network/tasks
 ```
 
 Unblock with:
 
 ```
 echo [pid] >/sys/fs/cgroup/net_cls/tasks
+```
+
+### Limit interface bandwidth with tc
+
+```
+# Add limit
+tc qdisc add dev ens33 root slowdown delay 1000ms
+
+# Remove limit
+tc qdisc del dev ens33 root netem
+```
+
+## Iptables
+
+- Five independent **Tables** (specify table with `-t`)
+- Each table have built-in chains + user defined chains
+- Each chain have a list of rules, matching a set of packets
+
+Tables:
+- `filter`: default.
+  Chains:
+  * INPUT (pkts for local sockets)
+  * FORWARD (pkts routed)
+  * OUTPUT (locally generated pkts)
+
+- `nat`: pkts creating a new connection. Used to alter pkts
+  Chains:
+  * PREROUTING (coming in pkts)
+  * INPUT
+  * OUTPUT
+  * POSTROUTING (leaving pkts)
+
+- `mangle`: specialized pkts altering
+
+- `raw`: ...
+
+- `security`: MAC rules
+
+## NAT
+
+https://www.karlrupp.net/en/computer/nat_tutorial
+
+## Rate limit input connections
+
+If more than `$dropConnCount` connection attempts are made in `$dropConnInterval`
+seconds, drop them.
+
+```sh
+    declare -i dropConnCount=3
+    declare -i dropConnInterval=240
+
+    echo "INFO: iptables delete chain LOGDROP"
+    iptables --zero INPUT
+    iptables --flush INPUT
+    iptables --zero LOGDROP
+    iptables --flush LOGDROP
+    sleep 1
+    iptables --delete-chain LOGDROP || { echo "WARN: delete chain LOGDROP failed"; }
+
+    echo "INFO: iptables new chain LOGDROP"
+    iptables -N LOGDROP
+
+    echo "INFO: iptables append LOGDROP: jump LOG"
+    iptables -A LOGDROP -j LOG
+
+    echo "INFO: iptables append LOGDROP: jump DROP"
+    iptables -A LOGDROP -j DROP
+
+    echo "INFO: iptables insert INPUT (match recent)"
+    iptables -I INPUT -p tcp --dport 22222 -i eth0 -m state --state NEW -m recent --set
+
+    echo "INFO: iptables insert INPUT (match recent): jump LOGDROP"
+    iptables -I INPUT -p tcp --dport 22222 -i eth0 -m state --state NEW -m recent --update --seconds $dropConnInterval --hitcount $dropConnCount -j LOGDROP
 ```

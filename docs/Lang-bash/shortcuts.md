@@ -1,5 +1,7 @@
 # Bash Shortcuts
+
 ## Prompt Editing
+
 >
 >**NOTE**: these are effectively readline shortcuts.
 >
@@ -64,8 +66,44 @@ In a shell, use:
 - bash: `bind`
 - zsh: `bindkey`
 
-## More info
+### More info
 
 - https://readline.kablamo.org/emacs.html
 
 - https://effective-shell.com/docs/section1/1-navigating-the-command-line/images/command-line.png
+
+### Repeating commands from history
+
+```
+$ echo foobar
+foobar
+
+# Repeat last command
+$ !
+foobar
+
+# Repeat last command starting with e
+$ !e
+foobar
+
+# Repeat last command starting with e
+$ !e
+foobar
+
+# Repeat last command having the foobar word
+$ !?foobar
+```
+
+Substitution:
+
+```
+# Substitute "foo" with "baz" in last command
+$ ^foo^baz
+bazbar
+
+# Same as before:
+$ !!:s^foo^baz
+
+# Substitute in last matching command start:
+$ !e:s^foo^baz
+```
