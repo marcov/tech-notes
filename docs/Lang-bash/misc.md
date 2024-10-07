@@ -114,3 +114,12 @@ $ wait 1 2 3 4
 # Will wait for all spawned children
 $ wait
 ```
+
+## Completion for alias command
+
+Allow an alias to use completion of the unaliased command:
+
+```bash
+alias k=kubectl
+complete -F __start_kubectl k
+```
