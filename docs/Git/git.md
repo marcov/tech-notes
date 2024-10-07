@@ -50,7 +50,9 @@ $ git am --3way 000x-...-file.path
 Use `--3way` to generate 3-way diff stuff when patching fails.
 
 ## rev-parse
+
 Get (short) commit hash of `HEAD`
+
 ```
 $ git rev-parse HEAD
 
@@ -163,6 +165,17 @@ See: https://www.atlassian.com/git/tutorials/rewriting-history
 `<REV>^!`: equivalent to `<REV>~..<REV>`
 
 `git rev-parse` for more info!
+
+## Specifying a Git refspec
+
+For more syntax see `gitrevisions(7)`.
+
+- `@{1}`: the state of the branch one step back in the reflog - e.g. before a
+rebase operation
+
+- `@{u}`: the upstream branch (e.g. for branch `foo`, `origin/foo`)
+
+- `@`: alias for `HEAD`, same as `HEAD@{1}`.
 
 ## Delete sensitive data
 Use the bfg tool
@@ -374,7 +387,9 @@ git status -s
 git log --abbrev-commit
 ```
 
-## Diff between ranges of commits
+## range-diff
+
+### Diff between ranges of commits
 
 Let's say you have rebased your branch with N commits, and you want to prove
 your changes done for rebase are correct. You can use `range-diff` to do that.
@@ -385,3 +400,22 @@ git [--word-diff] [--color-words] range-diff BEFORE_REBASE_HEAD~N..BEFORE_REBASE
 
 Use either the `--word-diff` or `--color-words` option to make the diff easier
 to read.
+
+### Compare before/after rebase
+
+When a rebase required merge conflicts to be resolved, compare the changes
+introduced by the rebase directly afterwards using:
+
+```
+$ git range-diff @{u} @{1} @
+```
+
+or, more readable:
+
+```
+$ git range-diff @{upstream} @{1} HEAD
+```
+
+The syntax `<base> <rev1> <rev2>` is equivalent to `<base>..<rev1> <base>..<rev2>`
+
+To understand the syntax, see the "refspec" section above.

@@ -48,6 +48,9 @@ TLDR:
   `Makefile` being executed by `make` are ignored, i.e. the variable is
   _overridden_
 
+- Normally make prints each line of the recipe before it is executed. This is
+  called "recipe echoing", and it can be suppressed using `@`.
+
 ### Priority
 
 TLDR - Priority of how a value is set:
