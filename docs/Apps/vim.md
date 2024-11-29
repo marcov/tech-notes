@@ -6,7 +6,7 @@ clang has built-in support for generating the `compile_commands.json`
 Simply compile each file using the flag `-MJ file.o.json`. E.g., when compiling
 using a Makefile, add to the CFLAGS `-MJ $@.json`
 
-To coalesce all json file in a compile_commands.json file use:
+To coalesce all jsons file in a single compile_commands.json, use:
 
 ```console
 sed -e '1s/^/[\n/' -e '$s/,$/\n]/' output/**/*.o.json > compile_commands.json

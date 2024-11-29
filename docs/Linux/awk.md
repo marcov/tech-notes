@@ -1,19 +1,38 @@
 # awk
 
+More info: [Idiomatic awk](https://backreference.org/2010/02/10/idiomatic-awk/index.html)
+
+General form: `condition { actions }`.
+
+`condition`: something that evaluates to true/false, e.g.:
+
+- `1` (always true, always run the action).
+- `/pattern/`
+- `$0 ~ /pattern/`
+
+`actions`: when not specified, default action is `print $0;`
+
 ## Print multiple lines on the same row:
 
-```awk
+```sh
 echo "a\nb\nc" | awk '{printf("%s,",$0);}'
 a,b,c,
 ```
 
 ## Change separator when printing fields
 
-Use `OFS` + the "magic" `$1=$1` statement:
+Use `OFS` + the "magic" `$1=$1` statement. The magic statement is used for
+force re-computation of $0.
 
-```awk
-echo "a b c" | awk 'BEGIN {OFS=",";} {$1=$1; print $0;}'
+```sh
+echo "a b c" | awk 'BEGIN {OFS=",";} {$1=$1} 1'
 a,b,c
+```
+
+Or also:
+
+```sh
+echo "a b c" | awk -v OFS=',' '{$1=$1}1'
 ```
 
 ## Filter lines by regex
@@ -24,7 +43,7 @@ a,b,c
 
 ## Filter lines by line number
 
-```awk
+```sh
 awk 'NR <= 10'
 ```
 

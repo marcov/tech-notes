@@ -152,29 +152,46 @@ Print information on the variables for that frame:
 info frame
 ```
 
-## GDB server
+## Remote debugging with GDB server
+
+### Automatic way
+
+You only need to copy the executable on the target machine. Then run gdb on
+your host:
+
+```
+(gdb) target extended-remote | ssh machine-address sudo gdbserver --multi -
+(gdb) set remote exec-file /tmp/file-to-debug
+(gdb) r
+```
+
+### Manual way
 
 - On target machine:
+
 ```
 gdbserver localhost:1234 <myapp>
 ```
 
 - On host (PC) machine
+
 ```
-gdb
-> target remote <IP>:1234
-> continue....
->core <local-core-file>
+(gdb) target remote <IP>:1234
+(gdb) continue ...
+(gdb) core <local-core-file>
+(gdb)
 ```
 
 ## Get ELF infos
 
 ### Sections
+
 ```
 maintenance info sections
 ```
 
 ## Use a separate symbol symbols file
+
 ```
 add-symbol-file <debug-info-file> <address>
 ```
